@@ -30,6 +30,28 @@ def merge(left_titles, right_titles, left_scores, right_scores):
     return result_titles, result_scores
 
 # Quick sort algorithm implementation
+def partition(book_list, similarity_scores, low, high):
+    pivot = similarity_scores[high]
+    i = low - 1                                             # Index of smaller element
+
+    for j in range(low, high):
+        if similarity_scores[j] >= pivot:
+            i += 1
+            book_list[i], book_list[j] = book_list[j], book_list[i]
+            similarity_scores[i], similarity_scores[j] = similarity_scores[j], similarity_scores[i]
+
+    # swap pivot with element at i + 1
+    similarity_scores[i + 1], similarity_scores[high] = similarity_scores[high], similarity_scores[i + 1]
+    book_list[i + 1], book_list[high] = book_list[high], book_list[i + 1]
+
+    return i + 1
+
+
+def quick_sort(book_list, similarity_scores, low, high):
+    if low < high:
+        pivot = partition(book_list, similarity_scores, low, high);
+        quick_sort(book_list, similarity_scores, low, pivot - 1)
+        quick_sort(book_list, similarity_scores, pivot + 1, high)
 
 
 # Example usage
@@ -39,4 +61,8 @@ if __name__ == "__main__":
     sorted_books, sorted_scores = merge_sort(sample_books_list, sample_scores)
     print("Merge Sort Sorted Books:", sorted_books)
     print("Merge Sort Sorted Scores:", sorted_scores)
+    print()
+    quick_sort(sample_books_list, sample_scores, 0, len(sample_books_list) - 1)
+    print("Quick Sort Sorted Books:", sorted_books)
+    print("Quick Sort Sorted Scores:", sorted_scores)
 
