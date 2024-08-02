@@ -1,3 +1,5 @@
+from timeit import default_timer as timer
+
 # Merge sort algorithm implementation
 '''
 def merge_sort(book_list, similarity_scores):
@@ -107,22 +109,35 @@ def quick_sort(book_list, similarity_scores, low, high):
         quick_sort(book_list, similarity_scores, pivot + 1, high)
 
 
-# Method for the simulation timer
+# Stackoverflow forum on timer in python
+# https://stackoverflow.com/questions/62959658/actual-time-taken-by-an-algorithm-to-sort
 
-
-
-# Example usage
-if __name__ == "__main__":
+def main():
+    # Example lists to test tim and quick sort
     sample_books_list = ["The Hobbit", "The Lord of the Rings", "Harry Potter", "A Game of Thrones"]
     sample_scores = [0.8, 0.9, 0.7, 0.85]
-    # sorted_books, sorted_scores = merge_sort(sample_books_list, sample_scores)
-    # print("Merge Sort Sorted Books:", sorted_books)
-    # print("Merge Sort Sorted Scores:", sorted_scores)
+
+    # Run tim sort with timer
+    tim_sort_start = timer()
     tim_sort(sample_books_list, sample_scores)
+    tim_sort_end = timer()
     print("Tim Sort Sorted Books: ", sample_books_list)
     print("Tim Sort Sorted Scores: ", sample_scores)
+    tim_sort_execution_time = round((tim_sort_end - tim_sort_start)* 1e9, 0)
+    print("Tim Sort Execution Time: ", tim_sort_execution_time, " nanoseconds")
+
     print()
+
+    # Run quick sort with timer
+    quick_sort_start = timer()
     quick_sort(sample_books_list, sample_scores, 0, len(sample_books_list) - 1)
+    quick_sort_end = timer()
     print("Quick Sort Sorted Books:", sample_books_list)
     print("Quick Sort Sorted Scores:", sample_scores)
+    quick_sort_execution_time = round((quick_sort_end - quick_sort_start) * 1e9, 0)
+    print("Quick Sort Execution Time: ", quick_sort_execution_time, " nanoseconds")
+
+
+if __name__ == "__main__":
+    main()
 
