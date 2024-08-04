@@ -13,11 +13,11 @@ def calcSim(targetBookSubj, singleBookSubj):
    similarity_score = cosine_sim[0, 1]
    return similarity_score
 
-def createSimList(targetBook, bookObjList):
+def createSimList(targetBook, bookList):
    finalSim = []
-   for book in bookObjList:
-      if book.Name != targetBook.Name and book.subjects != []:
-         simScore = calcSim(targetBook.subjects, book.subjects)
-         finalSim.append((book.Name, simScore))
+   for book in bookList:
+      if book['title'] != targetBook['title'] and book['subjects'] != "":
+         simScore = calcSim(targetBook['subjects'], book['subjects'])
+         finalSim.append((book['title'], simScore))
 
    return finalSim
