@@ -1,6 +1,9 @@
+/*
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Image, Button } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
+
+import Home from '/pages/Home';
 
 const cards = [
   {
@@ -31,7 +34,6 @@ const App = () => {
       </Text>
       <View style={styles.buttonContainer}>
         <Button title = "Login" onPress={() => setShowSwiper(true)} />
-          <Button title = "Quit" onPress={() => console.log('Quit')} />
       </View>
     </View>
   )
@@ -85,5 +87,34 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 })
+
+export default App
+*/
+
+// App.js
+import React from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+
+import Home from './pages/Home'
+import Swiping from './pages/Swiping'
+
+const Stack = createStackNavigator()
+
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          headerShown: false // This will remove the header globally for all screens
+        }}
+      >
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Swiping" component={Swiping} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+}
 
 export default App
