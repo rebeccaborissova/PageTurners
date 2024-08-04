@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import React, { useState } from 'react'
+import { View, Text, StyleSheet, Image, Button } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
 
 const cards = [
@@ -17,8 +17,27 @@ const cards = [
   },
 ]
 
+
 const App = () => {
-  return (
+  // use state of different screens
+  const [showSwiper, setShowSwiper] = useState(false)
+
+  // home screen component
+  const HomeScreen = () => (
+    <View style = {styles.container}>
+      <Text style={styles.title}>PageTurner</Text>
+      <Text style={styles.description}>
+        Welcome to PageTurner! Discover a variety of book recommendations based on your favorite book with just a swipe. 
+      </Text>
+      <View style={styles.buttonContainer}>
+        <Button title = "Login" onPress={() => setShowSwiper(true)} />
+          <Button title = "Quit" onPress={() => console.log('Quit')} />
+      </View>
+    </View>
+  )
+
+  // swiper screen component
+  const SwiperScreen = () => (
     <View style={styles.container}>
       <Swiper
         cards={cards}
@@ -35,6 +54,8 @@ const App = () => {
       />
     </View>
   )
+
+  return showSwiper ? <SwiperScreen /> : <HomeScreen />
 }
 
 const styles = StyleSheet.create({
