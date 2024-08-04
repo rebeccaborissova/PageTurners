@@ -1,8 +1,7 @@
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import logging
 import time
 
 app = Flask(__name__)
@@ -22,19 +21,38 @@ class Book:
             "subjects": self.subjects
         }
 
-def calculate_similarity(book1, book2):
-    if not book1.subjects or not book2.subjects:
+def calculate_similarity(subjects1, subjects2):
+    if not subjects1 or not subjects2:
         return 0.0
 
     try:
-        vectorizer = TfidfVectorizer().fit_transform([' '.join(book1.subjects), ' '.join(book2.subjects)])
+        vectorizer = TfidfVectorizer().fit_transform([' '.join(subjects1), ' '.join(subjects2)])
         vectors = vectorizer.toarray()
         cosine_sim = cosine_similarity(vectors)
         return cosine_sim[0, 1]
-    except ValueError as e:
+    except ValueError:
         return 0.0
 
-# Load the books data
+class BookGraph:
+    def __init__(self):
+        self.nodes = {}
+        self.edges = {}
+
+    def add_book(self, book):
+        self.nodes[book.id] = book
+
+    def add_edge(self, book_id1, book_id2, similarity_score):
+        if book_id1 not in self.edges:
+            self.edges[book_id1] = {}
+        self.edges[book_id1][book_id2] = similarity_score
+
+    def get_similar_books(self, book_id, top_n=5):
+        if book_id not in self.edges:
+            return []
+        
+        similar_books = sorted(self.edges[book_id].items(), key=lambda item: item[1], reverse=True)[:top_n]
+        return [(self.nodes[book_id2], score) for book_id2, score in similar_books]
+
 try:
     df = pd.read_csv('../books.csv')
     books = [Book(id=str(row['id']), subjects=row['subjects'], title=row['title'], authors=row['authors']) 
@@ -42,28 +60,32 @@ try:
 except Exception as e:
     books = []
 
+book_graph = BookGraph()
+for book in books:
+    book_graph.add_book(book)
+
+for i, book1 in enumerate(books):
+    for j, book2 in enumerate(books):
+        if i < j:
+            similarity = calculate_similarity(book1.subjects, book2.subjects)
+            book_graph.add_edge(book1.id, book2.id, similarity)
+            book_graph.add_edge(book2.id, book1.id, similarity)
+
 @app.route('/similar-books/<book_id>', methods=['GET'])
 def get_similar_books(book_id):
     start_time = time.time()
-    
-    input_book = next((book for book in books if book.id == book_id), None)
-    
+
+    input_book = book_graph.nodes.get(book_id)
     if not input_book:
         return jsonify({"error": "Book not found"}), 404
 
-    similarity_scores = []
-    for i, book in enumerate(books):
-        if book.id != book_id:
-            similarity = calculate_similarity(input_book, book)
-            similarity_scores.append((book, similarity))
-
-    similarity_scores.sort(key=lambda x: x[1], reverse=True)
+    top_similar_books = book_graph.get_similar_books(book_id)
 
     top_5_similar = [
         {
             "book": book.to_dict(),
             "similarity_score": score
-        } for book, score in similarity_scores[:5]
+        } for book, score in top_similar_books
     ]
 
     end_time = time.time()
