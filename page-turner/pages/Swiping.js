@@ -2,6 +2,7 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
+import { useNavigation } from '@react-navigation/native'
 
 const cards = [
   {
@@ -18,23 +19,30 @@ const cards = [
   },
 ]
 
-const Swiping = () => (
-  <View style={styles.container}>
-    <Swiper
-      cards={cards}
-      renderCard={(card) => (
-        <View style={styles.card}>
-          <Text style={styles.text}>{card.title}, {card.author}</Text>
-        </View>
-      )}
-      onSwiped={(cardIndex) => { console.log(cardIndex) }}
-      onSwipedAll={() => { console.log('All cards swiped') }}
-      cardIndex={0}
-      backgroundColor={'#f0f1f2'}
-      stackSize={3}
-    />
-  </View>
-)
+const Swiping = () => {
+  const navigation = useNavigation()
+
+  return (
+    <View style={styles.container}>
+      <Swiper
+        cards={cards}
+        renderCard={(card) => (
+          <View style={styles.card}>
+            <Text style={styles.text}>{card.title}, {card.author}</Text>
+          </View>
+        )}
+        onSwiped={(cardIndex) => { console.log(cardIndex) }}
+        onSwipedAll={() => { 
+          console.log('All cards swiped')
+          navigation.navigate('BookRecSummary')
+        }}
+        cardIndex={0}
+        backgroundColor={'#f0f1f2'}
+        stackSize={3}
+      />
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
