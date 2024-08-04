@@ -5,9 +5,9 @@ import { View, Text, StyleSheet, Button } from 'react-native'
 const Home = ({ navigation }) => {
   const makeRequest = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:3001/test", {
+      const response = await fetch("https://actual-terribly-longhorn.ngrok-free.app/test", {
           method: "GET"
-      });
+      })
       const text = await response.text();
       console.log(text);
     } catch (error) {
