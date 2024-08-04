@@ -2,17 +2,33 @@
 import React from 'react'
 import { View, Text, StyleSheet, Button } from 'react-native'
 
-const Home = ({ navigation }) => (
-  <View style={styles.container}>
-    <Text style={styles.title}>PageTurner</Text>
-    <Text style={styles.description}>
-      Welcome to PageTurner! Discover a variety of book recommendations based on your favorite book with just a swipe. 
-    </Text>
-    <View style={styles.buttonContainer}>
-      <Button title="Begin" onPress={() => navigation.navigate('SortingAlgorithmChoice')} />
+const Home = ({ navigation }) => {
+  const makeRequest = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:3001/test", {
+          method: "GET"
+      });
+      const text = await response.text();
+      console.log(text);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  
+  return (
+    <View style={styles.container}>
+      <Text>Hi</Text>
+      <Text style={styles.title}>PageTurner</Text>
+      <Text style={styles.description}>
+        Welcome to PageTurner! Discover a variety of book recommendations based on your favorite book with just a swipe. 
+      </Text>
+      <View style={styles.buttonContainer}>
+        <Button title="Begin" onPress={makeRequest} />
+      </View>
     </View>
-  </View>
-)
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
