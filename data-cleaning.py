@@ -4,7 +4,9 @@ import csv
 import unicodedata
 from langdetect import detect, LangDetectException
 
+# working w/ dict. to store book data
 
+# checking text validity
 def is_valid_text(text):
     # Remove diacritics and convert to ASCII
     normalized = unicodedata.normalize('NFKD', text).encode('ASCII', 'ignore').decode()
@@ -17,7 +19,7 @@ def is_english(text):
     except LangDetectException:
         return False
 
-
+# adding data to the sheet
 def parse_book_data(data):
     books = []
     entries = re.findall(r'/type/work\t(/works/OL\d+W)\t\d+\t[^\t]+\t(.+)', data)
@@ -43,6 +45,7 @@ def parse_book_data(data):
                     if author_key:
                         authors.append(author_key.split('/')[-1])
 
+            # valid entries appended to book obj list
             books.append({
                 'id': id,
                 'title': title,
@@ -54,7 +57,8 @@ def parse_book_data(data):
 
     return books
 
-
+# writing to csv file 
+# filename = file want to write to; fieldnames = columns of csv file
 def write_to_csv(books, filename):
     fieldnames = ['id', 'title', 'subjects', 'authors']
     with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
