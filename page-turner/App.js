@@ -2,6 +2,7 @@
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
+import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown'
 
 import Home from './pages/Home'
 import SortingAlgoChoice from './pages/SortingAlgoChoice'

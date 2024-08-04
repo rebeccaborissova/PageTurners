@@ -3,12 +3,8 @@ import json
 import csv
 import unicodedata
 from langdetect import detect, LangDetectException
-
-
 def is_valid_text(text):
-    # Remove diacritics and convert to ASCII
     normalized = unicodedata.normalize('NFKD', text).encode('ASCII', 'ignore').decode()
-    # Check if the text contains only letters, numbers, and basic punctuation
     return bool(re.match(r'^[A-Za-z0-9\s\-_.,;:!?()\'\"]+$', normalized))
 
 def is_english(text):
@@ -16,7 +12,6 @@ def is_english(text):
         return detect(text) == 'en'
     except LangDetectException:
         return False
-
 
 def parse_book_data(data):
     books = []
@@ -53,7 +48,6 @@ def parse_book_data(data):
             continue
 
     return books
-
 
 def write_to_csv(books, filename):
     fieldnames = ['id', 'title', 'subjects', 'authors']
