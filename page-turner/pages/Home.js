@@ -6,10 +6,10 @@ const Home = ({ navigation }) => (
   <View style={styles.container}>
     <Text style={styles.title}>PageTurner</Text>
     <Text style={styles.description}>
-      Welcome to PageTurner! Discover a variety of book recommendations based on your favorite book with just a swipe.
+      Welcome to PageTurner! Discover a variety of book recommendations based on your favorite book with just a swipe. 
     </Text>
     <View style={styles.buttonContainer}>
-      <Button title="Begin" onPress={() => navigation.navigate('Swiping')} />
+      <Button title="Begin" onPress={() => navigation.navigate('SortingAlgorithmChoice')} />
     </View>
   </View>
 )
