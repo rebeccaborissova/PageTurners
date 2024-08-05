@@ -1,9 +1,3 @@
-#from timeit import default_timer as timer
-
-import random
-
-# Implementation of Tim Sort and Quick Sort in descending order to get the highest similarity score index as first element in list
-# Insertion sort helper method for Tim sort (Tim sort combines insertion sort & merge function from merge sort)
 def insertion_sort(books, left_score, right_score):
     for i in range(left_score + 1, right_score + 1):
         key_title = books[i]
@@ -63,10 +57,10 @@ def tim_sort(book_list):
 
         size *= 2
 
-
-# Quick sort algorithm implementation
 def partition(book_list, low, high):
-    pivot_index = random.randint(low, high)  # random pivot
+    # median-of-three pivot selection 
+    mid = (low + high) // 2
+    pivot_index = sorted([low, mid, high], key=lambda x: book_list[x].similarity_score)[1]
     pivot = book_list[pivot_index].similarity_score
     book_list[pivot_index], book_list[high] = book_list[high], book_list[pivot_index]  # Swap pivot with end
     i = low - 1
@@ -82,70 +76,13 @@ def partition(book_list, low, high):
     return i + 1
 
 def quick_sort(book_list, low, high):
-    while low < high:
-        pivot = partition(book_list, low, high)
-        if pivot - low < high - pivot:
-            quick_sort(book_list, low, pivot - 1)
-            low = pivot + 1
-        else:
-            quick_sort(book_list, pivot + 1, high)
-            high = pivot - 1
+    if low >= high:
+        return
 
-
-
-
-'''
-def partition(book_list, low, high):
-    pivot = book_list[high].similarity_score
-    i = low - 1  # Index of smaller element
-
-    for j in range(low, high):
-        if book_list[j].similarity_score >= pivot:
-            i += 1
-            book_list[i], book_list[j] = book_list[j], book_list[i]
-
-    # swap pivot with element at i + 1
-    book_list[i + 1], book_list[high] = book_list[high], book_list[i + 1]
-
-    return i + 1
-
-
-def quick_sort(book_list, low, high):
-    if low < high:
-        pivot = partition(book_list, low, high)
+    pivot = partition(book_list, low, high)
+    if pivot - low < high - pivot:
         quick_sort(book_list, low, pivot - 1)
+        low = pivot + 1
+    else:
         quick_sort(book_list, pivot + 1, high)
-'''
-
-# Stackoverflow forum on timer in python
-# https://stackoverflow.com/questions/62959658/actual-time-taken-by-an-algorithm-to-sort
-'''
-def main():
-    # Example lists to test tim and quick sort
-    sample_books_list = ["The Hobbit", "The Lord of the Rings", "Harry Potter", "A Game of Thrones"]
-    sample_scores = [0.8, 0.9, 0.7, 0.85]
-
-    # Run tim sort with timer
-    tim_sort_start = timer()
-    tim_sort(sample_books_list)
-    tim_sort_end = timer()
-    print("Tim Sort Sorted Books: ", sample_books_list)
-    print("Tim Sort Sorted Scores: ", sample_scores)
-    tim_sort_execution_time = round((tim_sort_end - tim_sort_start) * 1e9, 0)
-    print("Tim Sort Execution Time: ", tim_sort_execution_time, " nanoseconds")
-
-    print()
-
-    # Run quick sort with timer
-    quick_sort_start = timer()
-    quick_sort(sample_books_list, sample_scores, 0, len(sample_books_list) - 1)
-    quick_sort_end = timer()
-    print("Quick Sort Sorted Books:")
-    print("Quick Sort Sorted Scores:", sample_scores)
-    quick_sort_execution_time = round((quick_sort_end - quick_sort_start) * 1e9, 0)
-    print("Quick Sort Execution Time: ", quick_sort_execution_time, " nanoseconds")
-
-
-if __name__ == "__main__":
-    main()
-'''
+        high = pivot - 1
