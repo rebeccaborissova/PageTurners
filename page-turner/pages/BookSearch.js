@@ -2,6 +2,7 @@
 import React, { useRef, useEffect, useState} from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity, Animated } from 'react-native';
 import images from '../constants/images';
+import Footer from '../components/footer';
 
 const BookSearch = ({ route, navigation }) => {
   // recieving choice of sorting algo
@@ -77,6 +78,7 @@ const BookSearch = ({ route, navigation }) => {
           </TouchableOpacity>
         </View>
       </Animated.View>
+      <Footer />
     </View>
   );
 };

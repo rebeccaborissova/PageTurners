@@ -92,7 +92,7 @@ const Swiping = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: '#E8E8E8',
+    borderColor: 'white',
     justifyContent: 'center',
     backgroundColor: 'white',
     padding: 20,

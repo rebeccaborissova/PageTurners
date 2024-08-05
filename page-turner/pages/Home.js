@@ -2,6 +2,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import images from '../constants/images';
+import Footer from '../components/footer';
 
 const Home = ({ navigation }) => {
 
@@ -43,6 +44,7 @@ const Home = ({ navigation }) => {
         <Text style={styles.buttonText}>Begin</Text>
       </TouchableOpacity>
       </View>
+      <Footer />
     </View>
   );
 }
@@ -53,6 +55,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5E6E1',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingBottom: 50,
   },
   logo: {
     width: 500,

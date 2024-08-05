@@ -2,6 +2,7 @@
 import React, { useRef, useEffect} from 'react';
 import { View, Text, StyleSheet, Button, Image, TouchableOpacity, Animated } from 'react-native';
 import images from '../constants/images';
+import Footer from '../components/footer';
 
 const SortingAlgoChoice = ({ navigation }) => {
   // working to est. fade-down transition
@@ -49,6 +50,7 @@ const SortingAlgoChoice = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </Animated.View>
+      <Footer />
   </View>
   )
 }
@@ -96,6 +98,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
   }
-})
+});
 
 export default SortingAlgoChoice
