@@ -10,11 +10,23 @@ const Home = ({ navigation }) => {
     const text = await response.text();
     console.log(text);
 
-    const response2 = await fetch("https://actual-terribly-longhorn.ngrok-free.app/similar-books/OL1000307W", {
+    /*const response2 = await fetch("https://actual-terribly-longhorn.ngrok-free.app/similar-books/OL1000307W", {
       method: "GET"
     });
     const text2 = await response2.text();
-    console.log(text2);
+    console.log(text2);*/
+
+    const response3 = await fetch("https://actual-terribly-longhorn.ngrok-free.app/get-book-id", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        title: "Book of realityy",
+      })
+    });
+    const text3 = await response3.text();
+    console.log(text3);
 
   }
 
