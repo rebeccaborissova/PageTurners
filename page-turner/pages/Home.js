@@ -31,7 +31,6 @@ const Home = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text>Hi</Text>
       <Image source={images.logo} style={styles.logo} />
       <Text style={styles.description}>
         You're just a swipe away from seeing recommendations based on your favorite book. 
