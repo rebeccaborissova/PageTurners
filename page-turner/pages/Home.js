@@ -50,7 +50,7 @@ const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#F5E6E1',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -74,10 +74,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   customButton: {
-    backgroundColor: 'brown', 
+    backgroundColor: '#6D2C2A', 
     paddingVertical: 5, 
     paddingHorizontal: 40, 
     borderRadius: 6, 
+    borderColor: '#4F1A15',
+    borderWidth: 3,
   },
   buttonText: {
     color: '#fff',
