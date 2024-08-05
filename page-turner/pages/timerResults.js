@@ -2,7 +2,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, Button } from 'react-native'
 
-const timerResults = ({ navigation }) => (
+const TimerResults = ({ navigation }) => (
   <View style={styles.container}>
     <Text style={styles.title}>PageTurner</Text>
     <Text style={styles.description}>
@@ -37,4 +37,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default timerResults
+export default TimerResults

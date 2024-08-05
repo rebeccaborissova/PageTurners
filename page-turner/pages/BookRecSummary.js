@@ -61,7 +61,7 @@ const BookRecSummary = () => {
         )}
       />
       <View style={styles.buttonContainer}>
-        <Button title="Sorting Algorithm Timer" onPress={() => navigation.navigate('timerResults')} />
+        <Button title="Sorting Algorithm Timer" onPress={() => navigation.navigate('TimerResults')} />
       </View>
     </View>
   )
