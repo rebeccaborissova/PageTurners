@@ -33,7 +33,7 @@ const SortingAlgoChoice = ({ navigation }) => {
 
       {/* animated view = special View screen w/ animations; style takes in array of styles */}
       <Animated.View style={[styles.contentContainer, { opacity: fadeAnim, transform: [{ translateY: transYAnim }] }]}>
-        <Text style={styles.description}>
+        <Text style={styles.title}>
           First, select your sorting algorithm:
         </Text>
         <View style={styles.buttonContainer}>
@@ -74,15 +74,11 @@ const styles = StyleSheet.create({
     marginBottom: 200,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  description: {
     fontSize: 25,
     textAlign: 'center',
     marginHorizontal: 20,
     marginBottom: 30,
+    fontFamily: 'Roboto-Medium',
   },
   customButton: {
     backgroundColor: '#6D2C2A',
@@ -97,6 +93,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     textAlign: 'center',
+    fontFamily: 'Roboto-Black',
   }
 });
 

@@ -62,16 +62,12 @@ const styles = StyleSheet.create({
     height: 250,
     marginBottom: 20,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
   description: {
     fontSize: 16,
     textAlign: 'center',
     marginHorizontal: 20,
-    marginBottom: 40,
+    marginBottom: 25,
+    fontFamily: 'Roboto-Medium',
   },
   buttonContainer: {
     marginTop: 10,
@@ -88,6 +84,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     textAlign: 'center',
+    fontFamily: 'Roboto-Regular',
   },
 })
 

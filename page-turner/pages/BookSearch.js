@@ -91,8 +91,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 25,
+    fontFamily: 'Roboto-Medium',
     marginBottom: 20,
   },
   logo: {
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    width: 250, // Adjust width as needed
+    width: 250, 
     marginVertical: 10,
     borderWidth: 1,
     padding: 10,
