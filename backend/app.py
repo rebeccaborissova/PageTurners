@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from fuzzywuzzy import fuzz
 import logging
 import time
 
@@ -91,6 +92,46 @@ def get_similar_books(book_id):
     return jsonify({
         "input_book": input_book.to_dict(),
         "similar_books": top_5_similar
+    })
+
+@app.route('/get-book-id', methods=['POST'])
+def get_book_id():
+    start_time = time.time()
+    data = request.json
+    if not data or 'title' not in data:
+        return jsonify({"error": "Book title is required"}), 400
+
+    title = data['title']
+    logger.debug(f"Received request to find ID for book title: {title}")
+
+    # Fuzzy matching
+    threshold = 95  # Adjust this value to change the strictness of matching
+    matching_books = []
+    for book in books:
+        ratio = fuzz.ratio(book.title.lower(), title.lower())
+        if ratio >= threshold:
+            matching_books.append((book, ratio))
+
+    matching_books.sort(key=lambda x: x[1], reverse=True)
+
+    if not matching_books:
+        logger.warning(f"No book found with similar title to: {title}")
+        return jsonify({"error": "No books found with similar titles"}), 404
+
+    if len(matching_books) > 1:
+        logger.warning(f"Multiple books found with similar titles to: {title}")
+        return jsonify({
+            "warning": "Multiple books found with similar titles",
+            "books": [{"id": book.id, "title": book.title} 
+                      for book, ratio in matching_books[:5]]  # Return top 5 matches
+        })
+
+    matching_book, ratio = matching_books[0]
+    end_time = time.time()
+    logger.info(f"Found book ID for title '{title}'. Process took {end_time - start_time:.2f} seconds")
+    return jsonify({
+        "id": matching_book.id,
+        "title": matching_book.title
     })
 
 @app.route('/test', methods=['GET'])
