@@ -1,6 +1,6 @@
 // SortingAlgoChoice.js
 import React, { useRef, useEffect} from 'react';
-import { View, Text, StyleSheet, Button, Image, TouchableOpacity, Animated } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Animated } from 'react-native';
 import images from '../constants/images';
 import Footer from '../components/footer';
 
