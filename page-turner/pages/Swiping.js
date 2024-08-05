@@ -7,6 +7,8 @@ const Swiping = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { book_id } = route.params;
+  const { sortingAlgorithm } = route.params;  
+
 
   const [books, setBooks] = useState([]);
   const [likedBooks, setLikedBooks] = useState([]);
@@ -45,7 +47,7 @@ const Swiping = () => {
 
   const handleSwipedAll = () => {
     console.log('All cards swiped');
-    navigation.navigate('BookRecSummary', { likedBooks: likedBooks.map(book => book.title) });
+    navigation.navigate('BookRecSummary', { sortingAlgorithm }, { likedBooks: likedBooks.map(book => book.title) });
   };
 
   if (loading) {
