@@ -40,7 +40,7 @@ const BookSearch = ({ route, navigation }) => {
     });
     const book_id = JSON.parse(await response.text()).id;
     console.log('Searching for:', book_id);
-    navigation.navigate('Swiping', { book_id: book_id });
+    navigation.navigate('Swiping', { book_id: book_id, sortingAlgorithm });
   }
   
   return (
