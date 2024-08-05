@@ -1,5 +1,5 @@
 // SortingAlgoChoice.js
-import React, { useRef, useEffect} from 'react';
+import React, { useRef, useEffect, useState} from 'react';
 import { View, Text, StyleSheet, Button, Image, TouchableOpacity, Animated } from 'react-native';
 import images from '../constants/images';
 import Footer from '../components/footer';
@@ -24,7 +24,7 @@ const SortingAlgoChoice = ({ navigation }) => {
   }, [fadeAnim, transYAnim]);
 
   const sortingChoice = (sortAlgoChoice) => {
-    navigation.navigate('BookSearch', { sortingAlgorthim: sortAlgoChoice});
+    navigation.navigate('BookSearch', { sortingAlgorithm: sortAlgoChoice});
   };
 
   return (
@@ -39,13 +39,13 @@ const SortingAlgoChoice = ({ navigation }) => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.customButton}
-            onPress={() => sortingChoice('QuickSort')}>
+            onPress={() => sortingChoice('Quick Sort')}>
             <Text style={styles.buttonText}> Quick Sort </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.customButton}
-            onPress={() => sortingChoice('TimSort')}>
+            onPress={() => sortingChoice('Tim Sort')}>
             <Text style={styles.buttonText}> Tim Sort </Text>
           </TouchableOpacity>
         </View>

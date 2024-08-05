@@ -6,7 +6,13 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 const BookRecSummary = () => {
   const route = useRoute()
   const navigation = useNavigation()
+  // receiving choices of likedBooks from BookSearch and sortingAlgo from SortingAlgoChoice
   const { likedBooks } = route.params
+  const { sortingAlgorithm } = route.params;  
+
+  const handleToTimerResults = () => {
+    navigation.navigate('TimerResults', { sortingAlgorithm });
+  }
 
   return (
     <View style={styles.container}>
@@ -19,9 +25,9 @@ const BookRecSummary = () => {
             <Text style={styles.bookText}>{item.title}</Text>
           </View>
         )}
-      />
+      /> 
       <View style={styles.buttonContainer}>
-        <Button title="Sorting Algorithm Timer" onPress={() => navigation.navigate('TimerResults')} />
+        <Button title="Sorting Algorithm Timer" onPress={handleToTimerResults} />
       </View>
     </View>
   )
@@ -48,7 +54,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   buttonContainer: {
-    marginTop: 20,
+    marginTop: 200,
   },
 })
 
