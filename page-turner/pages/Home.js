@@ -2,6 +2,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import images from '../constants/images';
+import Footer from '../components/footer';
 
 const Home = ({ navigation }) => {
 
@@ -43,6 +44,7 @@ const Home = ({ navigation }) => {
         <Text style={styles.buttonText}>Begin</Text>
       </TouchableOpacity>
       </View>
+      <Footer />
     </View>
   );
 }
@@ -50,39 +52,39 @@ const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#F5E6E1',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingBottom: 50,
   },
   logo: {
     width: 500,
     height: 250,
     marginBottom: 20,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
   description: {
     fontSize: 16,
     textAlign: 'center',
     marginHorizontal: 20,
-    marginBottom: 40,
+    marginBottom: 25,
+    fontFamily: 'Roboto-Medium',
   },
   buttonContainer: {
     marginTop: 10,
   },
   customButton: {
-    backgroundColor: 'brown', 
+    backgroundColor: '#6D2C2A', 
     paddingVertical: 5, 
     paddingHorizontal: 40, 
     borderRadius: 6, 
+    borderColor: '#4F1A15',
+    borderWidth: 3,
   },
   buttonText: {
     color: '#fff',
     fontSize: 20,
     textAlign: 'center',
+    fontFamily: 'Roboto-Regular',
   },
 })
 

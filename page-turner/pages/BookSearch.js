@@ -40,6 +40,7 @@ const BookSearch = ({ navigation }) => {
 import React, { useRef, useEffect, useState} from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity, Animated } from 'react-native';
 import images from '../constants/images';
+import Footer from '../components/footer';
 
 const BookSearch = ({ route, navigation }) => {
   // recieving choice of sorting algo
@@ -115,6 +116,7 @@ const BookSearch = ({ route, navigation }) => {
           </TouchableOpacity>
         </View>
       </Animated.View>
+      <Footer />
     </View>
   );
 };
@@ -122,7 +124,7 @@ const BookSearch = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#F5E6E1',
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
@@ -139,8 +141,8 @@ const styles = StyleSheet.create({
     paddingVertical: 40, // Add vertical padding to position content higher
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 25,
+    fontFamily: 'Roboto-Medium',
     marginBottom: 20,
 <<<<<<< HEAD
 =======
@@ -154,14 +156,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
     marginBottom: 200,
     paddingHorizontal: 20,
 >>>>>>> refs/remotes/origin/main
   },
   input: {
     height: 40,
-    width: 250, // Adjust width as needed
+    width: 250, 
     marginVertical: 10,
     borderWidth: 1,
 <<<<<<< HEAD
@@ -183,13 +184,13 @@ const styles = StyleSheet.create({
 =======
     padding: 10,
     borderRadius: 6,
+    backgroundColor: 'white',
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    backgroundColor: 'white',
   },
   searchIcon: {
     width: 90,
