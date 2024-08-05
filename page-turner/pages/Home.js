@@ -1,6 +1,6 @@
 // Home.js
 import React from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Button } from 'react-native';
 import images from '../constants/images';
 import Footer from '../components/footer';
 
@@ -26,8 +26,12 @@ const Home = ({ navigation }) => {
     console.log(text3);
   }
   
-    const handleBegin = () => {
+  const handleBegin = () => {
     navigation.navigate('SortingAlgorithmChoice')
+  };
+
+  const handleThankYou = () => {
+    navigation.navigate('ThankYou');
   };
 
   return (
@@ -40,9 +44,16 @@ const Home = ({ navigation }) => {
         <TouchableOpacity
         style={styles.customButton}
         onPress={handleBegin}
-      >
+        >
         <Text style={styles.buttonText}>Begin</Text>
       </TouchableOpacity>
+      
+       <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.customButton} onPress={handleThankYou}>
+          <Text style={styles.buttonText}>Hi</Text>
+        </TouchableOpacity>
+      </View>
+
       </View>
       <Footer />
     </View>
