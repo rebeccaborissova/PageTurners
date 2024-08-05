@@ -4,15 +4,18 @@ import { View, Text, StyleSheet, Button } from 'react-native'
 
 const Home = ({ navigation }) => {
   const makeRequest = async () => {
-    try {
-      const response = await fetch("https://actual-terribly-longhorn.ngrok-free.app/test", {
-          method: "GET"
-      })
-      const text = await response.text();
-      console.log(text);
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    const response = await fetch("https://actual-terribly-longhorn.ngrok-free.app/test", {
+      method: "GET"
+    });
+    const text = await response.text();
+    console.log(text);
+
+    const response2 = await fetch("https://actual-terribly-longhorn.ngrok-free.app/similar-books/OL1000307W", {
+      method: "GET"
+    });
+    const text2 = await response2.text();
+    console.log(text2);
+
   }
 
   
