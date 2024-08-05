@@ -1,12 +1,34 @@
 // SortingAlgoChoice.js
-import React from 'react'
-import { View, Text, StyleSheet, Button, Image, TouchableOpacity } from 'react-native'
+import React, { useRef, useEffect} from 'react';
+import { View, Text, StyleSheet, Button, Image, TouchableOpacity, Animated } from 'react-native';
 import images from '../constants/images';
 
-const SortingAlgoChoice = ({ navigation }) => (
-  <View style={styles.selection}>
+const SortingAlgoChoice = ({ navigation }) => {
+  // working to est. fade-down transition
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const transYAnim = useRef(new Animated.Value(-70)).current;
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1, // making button appear
+      duration: 1000,
+      useNativeDriver: true, // improve performance
+    }).start();
+
+    Animated.timing(transYAnim, {
+      toValue: 0, // moving from position -50 to 0
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  }, [fadeAnim, transYAnim]);
+
+  return (
+    <View style={styles.selection}>
     <Image source = {images.logo} style={styles.logo} />
-    <View style = {styles.contentContainer}>
+
+
+    {/* animated view = special View screen w/ animations; style takes in array of styles */}
+    <Animated.View style={[styles.contentContainer, { opacity: fadeAnim, transform: [{ translateY: transYAnim }] }]}>
       <Text style={styles.description}>
         First, select your sorting algorithm:
       </Text>
@@ -22,11 +44,11 @@ const SortingAlgoChoice = ({ navigation }) => (
           onPress={() => navigation.navigate('BookSearch')}>
           <Text style={styles.buttonText}> Tim Sort </Text>
         </TouchableOpacity>
-        
       </View>
-    </View> 
+    </Animated.View>
   </View>
-)
+  )
+}
 
 const styles = StyleSheet.create({
   selection: {
@@ -36,7 +58,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   logo: {
-    paddingTop: 100,
+    marginTop: 20,
     width: 200,
     height: 200,
   },
