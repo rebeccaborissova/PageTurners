@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
 const BookSearch = ({ navigation }) => {
-  const makeRequest = async () => {
+  /*const makeRequest = async () => {
     const response = await fetch("https://actual-terribly-longhorn.ngrok-free.app/test", {
       method: "GET"
     });
@@ -27,7 +27,7 @@ const BookSearch = ({ navigation }) => {
       });
       const text3 = await response3.text();
       console.log(text3);
-    }
+    }*/
   
 
   const [bookName, setBookName] = useState('');
@@ -35,7 +35,7 @@ const BookSearch = ({ navigation }) => {
   const searchBook = () => {
     // Placeholder for search logic
     console.log('Search for:', bookName);
-    navigation.navigate('Swiping', { bookName, sortingAlgorithm: 'TimSort' }); // Example navigation
+    navigation.navigate('Swiping'); // Example navigation
   };
 
   return (
