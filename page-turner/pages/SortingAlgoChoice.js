@@ -22,30 +22,33 @@ const SortingAlgoChoice = ({ navigation }) => {
     }).start();
   }, [fadeAnim, transYAnim]);
 
+  const sortingChoice = (sortAlgoChoice) => {
+    navigation.navigate('BookSearch', { sortingAlgorthim: sortAlgoChoice});
+  };
+
   return (
     <View style={styles.selection}>
-    <Image source = {images.logo} style={styles.logo} />
+      <Image source = {images.logo} style={styles.logo} />
 
+      {/* animated view = special View screen w/ animations; style takes in array of styles */}
+      <Animated.View style={[styles.contentContainer, { opacity: fadeAnim, transform: [{ translateY: transYAnim }] }]}>
+        <Text style={styles.description}>
+          First, select your sorting algorithm:
+        </Text>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.customButton}
+            onPress={() => sortingChoice('QuickSort')}>
+            <Text style={styles.buttonText}> Quick Sort </Text>
+          </TouchableOpacity>
 
-    {/* animated view = special View screen w/ animations; style takes in array of styles */}
-    <Animated.View style={[styles.contentContainer, { opacity: fadeAnim, transform: [{ translateY: transYAnim }] }]}>
-      <Text style={styles.description}>
-        First, select your sorting algorithm:
-      </Text>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.customButton}
-          onPress={() => navigation.navigate('BookSearch')}>
-          <Text style={styles.buttonText}> Quick Sort </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.customButton}
-          onPress={() => navigation.navigate('BookSearch')}>
-          <Text style={styles.buttonText}> Tim Sort </Text>
-        </TouchableOpacity>
-      </View>
-    </Animated.View>
+          <TouchableOpacity
+            style={styles.customButton}
+            onPress={() => sortingChoice('TimSort')}>
+            <Text style={styles.buttonText}> Tim Sort </Text>
+          </TouchableOpacity>
+        </View>
+      </Animated.View>
   </View>
   )
 }
