@@ -19,7 +19,6 @@ const Home = ({ navigation }) => {
 
   }
 
-  
   return (
     <View style={styles.container}>
       <Text>Hi</Text>
