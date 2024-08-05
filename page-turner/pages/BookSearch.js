@@ -47,18 +47,20 @@ const BookSearch = ({ route, navigation }) => {
     <View style={styles.container}>
       <Image source={images.logo} style={styles.logo} />
       <Animated.View style={[styles.contentContainer, { opacity: fadeAnim, transform: [{ translateY: transYAnim }] }]}>
-        <Text style={styles.title}>Enter a Book Title</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Type here..."
-          onChangeText={setBookName}
-          value={bookName}
-        />
-        <TouchableOpacity style={styles.searchButton} onPress={searchBook}>
-          <Text style={styles.buttonText}>Search</Text>
-        </TouchableOpacity>
+        <Text style={styles.title}>Enter a book title: </Text>
+        <View style =  {styles.searchContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Type here..."
+            onChangeText={setBookName}
+            value={bookName}
+          />
+          <TouchableOpacity onPress = {searchBook}>
+            <Image source = {images.searchIcon} style={styles.searchIcon} />
+          </TouchableOpacity>
+        </View>
       </Animated.View>
-      <Footer />
+      < Footer />
     </View>
   );
 };
@@ -66,10 +68,9 @@ const BookSearch = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#F5E6E1',
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
+    justifyContent: 'flex-start',
   },
   logo: {
     width: 150,
@@ -78,10 +79,10 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    justifyContent: 'flex-start', // Align items to the top
+    justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
-    paddingVertical: 40, // Add vertical padding to position content higher
+    paddingVertical: 40,
   },
   title: {
     fontSize: 25,
@@ -102,10 +103,11 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    width: '100%',
-    marginVertical: 12,
+    width: 250, 
+    marginVertical: 10,
     borderWidth: 1,
-    padding: 10,
+    borderColor: 'black',
+    paddingHorizontal: 10,
     borderRadius: 6,
     backgroundColor: 'white',
   },

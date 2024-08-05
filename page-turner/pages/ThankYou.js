@@ -13,4 +13,6 @@ const ThankYou = () => {
 
 export default ThankYou
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    
+})
