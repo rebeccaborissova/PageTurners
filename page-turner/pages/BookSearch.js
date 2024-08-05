@@ -1,9 +1,31 @@
 // BookSearch.js 
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import React, { useRef, useEffect, useState} from 'react';
+import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity, Animated } from 'react-native';
+import images from '../constants/images';
 
-const BookSearch = ({ navigation }) => {
-  /*const makeRequest = async () => {
+const BookSearch = ({ route, navigation }) => {
+  // recieving choice of sorting algo
+  const { sortingAlgorithm } = route.params;
+
+   // working to est. fade-down transition
+   const fadeAnim = useRef(new Animated.Value(0)).current;
+   const transYAnim = useRef(new Animated.Value(-70)).current;
+ 
+   useEffect(() => {
+     Animated.timing(fadeAnim, {
+       toValue: 1, // making button appear
+       duration: 1000,
+       useNativeDriver: true, // improve performance
+     }).start();
+ 
+     Animated.timing(transYAnim, {
+       toValue: 0, // moving from position -50 to 0
+       duration: 1000,
+       useNativeDriver: true,
+     }).start();
+   }, [fadeAnim, transYAnim]);
+
+  const makeRequest = async () => {
     const response = await fetch("https://actual-terribly-longhorn.ngrok-free.app/test", {
       method: "GET"
     });
@@ -27,27 +49,34 @@ const BookSearch = ({ navigation }) => {
       });
       const text3 = await response3.text();
       console.log(text3);
-    }*/
+    }
   
-
   const [bookName, setBookName] = useState('');
 
   const searchBook = () => {
-    // Placeholder for search logic
     console.log('Search for:', bookName);
-    navigation.navigate('Swiping'); // Example navigation
+    console.log('Sorting algorthim: ', sortingAlgorithm);
+    navigation.navigate('Swiping', { bookName, sortingAlgorithm });
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Enter a book title</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Type here..."
-        onChangeText={setBookName}
-        value={bookName}
-      />
-      <Button title="Search" onPress={searchBook} />
+      <Image source = {images.logo} style={styles.logo} />
+
+      <Animated.View style={[styles.contentContainer, { opacity: fadeAnim, transform: [{ translateY: transYAnim }] }]}>
+        <Text style={styles.title}>Enter a book title: </Text>
+        <View style =  {styles.searchContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Type here..."
+            onChangeText={setBookName}
+            value={bookName}
+          />
+          <TouchableOpacity onPress = {searchBook}>
+            <Image source = {images.searchIcon} style={styles.searchIcon} />
+          </TouchableOpacity>
+        </View>
+      </Animated.View>
     </View>
   );
 };
@@ -59,21 +88,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
-  logo: {
-    width: 150,
-    height: 150,
-    marginBottom: 20,
-  },
-  contentContainer: {
-    flex: 1,
-    justifyContent: 'flex-start', // Align items to the top
-    alignItems: 'center',
-    width: '100%',
-    paddingVertical: 40, // Add vertical padding to position content higher
-  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  logo: {
+    marginTop: 20,
+    width: 200,
+    height: 200,
+  },
+  contentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    marginBottom: 200,
+    paddingHorizontal: 20,
   },
   input: {
     height: 40,
@@ -81,6 +112,19 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     borderWidth: 1,
     padding: 10,
+    borderRadius: 6,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    backgroundColor: 'white',
+  },
+  searchIcon: {
+    width: 90,
+    height: 50,
+    marginLeft: -15,
   },
 });
 
