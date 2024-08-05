@@ -1,6 +1,6 @@
 // Home.js
 import React from 'react'
-import { View, Text, StyleSheet, Button, Image, Touchable, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import images from '../constants/images';
 
 const Home = ({ navigation }) => {
