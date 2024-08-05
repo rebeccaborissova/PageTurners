@@ -1,18 +1,24 @@
 // Home.js
 import React from 'react'
-import { View, Text, StyleSheet, Button } from 'react-native'
+import { View, Text, StyleSheet, Button, Image, Touchable, TouchableOpacity } from 'react-native';
+import images from '../constants/images';
 
 const Home = ({ navigation }) => (
   <View style={styles.container}>
-    <Text style={styles.title}>PageTurner</Text>
+    <Image source={images.logo} style={styles.logo} />
     <Text style={styles.description}>
-      Welcome to PageTurner! Discover a variety of book recommendations based on your favorite book with just a swipe. 
+      You're just a swipe away from seeing recommendations based on your favorite book. 
     </Text>
     <View style={styles.buttonContainer}>
-      <Button title="Begin" onPress={() => navigation.navigate('SortingAlgorithmChoice')} />
+      <TouchableOpacity
+        style={styles.customButton}
+        onPress={() => navigation.navigate('SortingAlgorithmChoice')}
+      >
+        <Text style={styles.buttonText}>Begin</Text>
+      </TouchableOpacity>
     </View>
   </View>
-)
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -20,6 +26,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  logo: {
+    width: 500,
+    height: 250,
+    marginBottom: 20,
   },
   title: {
     fontSize: 24,
@@ -33,7 +44,18 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   buttonContainer: {
-    marginTop: 20,
+    marginTop: 10,
+  },
+  customButton: {
+    backgroundColor: 'brown', 
+    paddingVertical: 5, 
+    paddingHorizontal: 40, 
+    borderRadius: 6, 
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 20,
+    textAlign: 'center',
   },
 })
 
