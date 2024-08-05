@@ -104,7 +104,7 @@ def partition(book_list, similarity_scores, low, high):
 
 def quick_sort(book_list, similarity_scores, low, high):
     if low < high:
-        pivot = partition(book_list, similarity_scores, low, high);
+        pivot = partition(book_list, similarity_scores, low, high)
         quick_sort(book_list, similarity_scores, low, pivot - 1)
         quick_sort(book_list, similarity_scores, pivot + 1, high)
 

@@ -51,12 +51,12 @@ const BookSearch = ({ route, navigation }) => {
       console.log(text3);
     }
   
+
   const [bookName, setBookName] = useState('');
 
   const searchBook = () => {
     console.log('Search for:', bookName);
-    console.log('Sorting algorthim: ', sortingAlgorithm);
-    navigation.navigate('Swiping', { bookName, sortingAlgorithm });
+    navigation.navigate('Swiping', { bookName, sortingAlgorithm: 'TimSort' }); // Example navigation
   };
 
   return (
