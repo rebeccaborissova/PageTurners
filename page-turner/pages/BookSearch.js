@@ -84,7 +84,7 @@ const BookSearch = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#F5E6E1',
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
@@ -102,7 +102,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
     marginBottom: 200,
     paddingHorizontal: 20,
   },
@@ -113,13 +112,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     borderRadius: 6,
+    backgroundColor: 'white',
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    backgroundColor: 'white',
   },
   searchIcon: {
     width: 90,

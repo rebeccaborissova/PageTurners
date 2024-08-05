@@ -56,7 +56,7 @@ const SortingAlgoChoice = ({ navigation }) => {
 const styles = StyleSheet.create({
   selection: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#F5E6E1',
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
     marginBottom: 200,
   },
   title: {
@@ -84,11 +83,13 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   customButton: {
-    backgroundColor: 'brown',
+    backgroundColor: '#6D2C2A',
     paddingVertical: 10,
     paddingHorizontal: '23%',
     borderRadius: 6,
     marginVertical: 10,
+    borderColor: '#4F1A15',
+    borderWidth: 3,
   },
   buttonText: {
     color: 'white',
