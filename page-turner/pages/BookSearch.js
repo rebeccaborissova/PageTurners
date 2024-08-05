@@ -45,21 +45,18 @@ const BookSearch = ({ route, navigation }) => {
   
   return (
     <View style={styles.container}>
-      <Image source = {images.logo} style={styles.logo} />
-
+      <Image source={images.logo} style={styles.logo} />
       <Animated.View style={[styles.contentContainer, { opacity: fadeAnim, transform: [{ translateY: transYAnim }] }]}>
-        <Text style={styles.title}>Enter a book title: </Text>
-        <View style =  {styles.searchContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Type here..."
-            onChangeText={setBookName}
-            value={bookName}
-          />
-          <TouchableOpacity onPress = {searchBook}>
-            <Image source = {images.searchIcon} style={styles.searchIcon} />
-          </TouchableOpacity>
-        </View>
+        <Text style={styles.title}>Enter a Book Title</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Type here..."
+          onChangeText={setBookName}
+          value={bookName}
+        />
+        <TouchableOpacity style={styles.searchButton} onPress={searchBook}>
+          <Text style={styles.buttonText}>Search</Text>
+        </TouchableOpacity>
       </Animated.View>
       <Footer />
     </View>
@@ -69,9 +66,10 @@ const BookSearch = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5E6E1',
+    backgroundColor: 'white',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
+    padding: 20,
   },
   logo: {
     width: 150,
@@ -104,8 +102,8 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    width: 250, 
-    marginVertical: 10,
+    width: '100%',
+    marginVertical: 12,
     borderWidth: 1,
     padding: 10,
     borderRadius: 6,
