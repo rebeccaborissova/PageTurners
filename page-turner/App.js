@@ -10,6 +10,8 @@ import BookSearch from './pages/BookSearch'
 import Swiping from './pages/Swiping'
 import BookRecSummary from './pages/BookRecSummary'
 import TimerResults from './pages/timerResults'
+import ThankYou from './pages/ThankYou'
+
 
 import { useFonts } from 'expo-font';
 
@@ -45,6 +47,7 @@ const App = () => {
         <Stack.Screen name="Swiping" component={Swiping} />
         <Stack.Screen name="BookRecSummary" component={BookRecSummary} />
         <Stack.Screen name="TimerResults" component={TimerResults} />
+        <Stack.Screen name="ThankYou" component={ThankYou} />
       
       </Stack.Navigator>
     </NavigationContainer>
