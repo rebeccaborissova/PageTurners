@@ -3,22 +3,41 @@ import React from 'react'
 import { View, Text, StyleSheet, Button, Image, Touchable, TouchableOpacity } from 'react-native';
 import images from '../constants/images';
 
-const Home = ({ navigation }) => (
-  <View style={styles.container}>
-    <Image source={images.logo} style={styles.logo} />
-    <Text style={styles.description}>
-      You're just a swipe away from seeing recommendations based on your favorite book. 
-    </Text>
-    <View style={styles.buttonContainer}>
-      <TouchableOpacity
+const Home = ({ navigation }) => {
+  const makeRequest = async () => {
+    const response = await fetch("https://actual-terribly-longhorn.ngrok-free.app/test", {
+      method: "GET"
+    });
+    const text = await response.text();
+    console.log(text);
+
+    const response2 = await fetch("https://actual-terribly-longhorn.ngrok-free.app/similar-books/OL1000307W", {
+      method: "GET"
+    });
+    const text2 = await response2.text();
+    console.log(text2);
+
+  }
+
+  
+  return (
+    <View style={styles.container}>
+      <Text>Hi</Text>
+      <Image source={images.logo} style={styles.logo} />
+      <Text style={styles.description}>
+        You're just a swipe away from seeing recommendations based on your favorite book. 
+      </Text>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
         style={styles.customButton}
-        onPress={() => navigation.navigate('SortingAlgorithmChoice')}
+        onPress={makeRequest}
       >
         <Text style={styles.buttonText}>Begin</Text>
       </TouchableOpacity>
+      </View>
     </View>
-  </View>
-);
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
