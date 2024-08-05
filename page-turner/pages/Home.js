@@ -4,20 +4,10 @@ import { View, Text, StyleSheet, Button, Image, Touchable, TouchableOpacity } fr
 import images from '../constants/images';
 
 const Home = ({ navigation }) => {
-  const makeRequest = async () => {
-    const response = await fetch("https://actual-terribly-longhorn.ngrok-free.app/test", {
-      method: "GET"
-    });
-    const text = await response.text();
-    console.log(text);
 
-    const response2 = await fetch("https://actual-terribly-longhorn.ngrok-free.app/similar-books/OL1000307W", {
-      method: "GET"
-    });
-    const text2 = await response2.text();
-    console.log(text2);
-
-  }
+  const handleBegin = () => {
+    navigation.navigate('SortingAlgorithmChoice')
+  };
 
   return (
     <View style={styles.container}>
@@ -29,7 +19,7 @@ const Home = ({ navigation }) => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
         style={styles.customButton}
-        onPress={makeRequest}
+        onPress={handleBegin}
       >
         <Text style={styles.buttonText}>Begin</Text>
       </TouchableOpacity>
