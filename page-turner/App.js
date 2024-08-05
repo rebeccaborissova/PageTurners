@@ -21,7 +21,7 @@ const App = () => {
         screenOptions={{
           headerShown: false // removes header globally for all screens
         }}
-      >
+      > 
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="BookSearch" component={BookSearch} />
         <Stack.Screen name="SortingAlgorithmChoice" component={SortingAlgoChoice} />

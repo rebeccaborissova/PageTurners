@@ -1,25 +1,51 @@
 // SortingAlgoChoice.js
 import React from 'react'
-import { View, Text, StyleSheet, Button } from 'react-native'
+import { View, Text, StyleSheet, Button, Image, TouchableOpacity } from 'react-native'
+import images from '../constants/images';
 
 const SortingAlgoChoice = ({ navigation }) => (
-  <View style={styles.container}>
-    <Text style={styles.title}>PageTurner</Text>
-    <Text style={styles.description}>
-       Pick a sorting algorithm
-    </Text>
-    <View style={styles.buttonContainer}>
-      <Button title="Tim Sort" onPress={() => navigation.navigate('BookSearch')} />
-    </View>
+  <View style={styles.selection}>
+    <Image source = {images.logo} style={styles.logo} />
+    <View style = {styles.contentContainer}>
+      <Text style={styles.description}>
+        First, select your sorting algorithm:
+      </Text>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.customButton}
+          onPress={() => navigation.navigate('BookSearch')}>
+          <Text style={styles.buttonText}> Quick Sort </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.customButton}
+          onPress={() => navigation.navigate('BookSearch')}>
+          <Text style={styles.buttonText}> Tim Sort </Text>
+        </TouchableOpacity>
+        
+      </View>
+    </View> 
   </View>
 )
 
 const styles = StyleSheet.create({
-  container: {
+  selection: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  logo: {
+    paddingTop: 100,
+    width: 200,
+    height: 200,
+  },
+  contentContainer: {
+    flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    marginBottom: 200,
   },
   title: {
     fontSize: 24,
@@ -27,14 +53,23 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   description: {
-    fontSize: 16,
+    fontSize: 25,
     textAlign: 'center',
     marginHorizontal: 20,
-    marginBottom: 40,
+    marginBottom: 30,
   },
-  buttonContainer: {
-    marginTop: 20,
+  customButton: {
+    backgroundColor: 'brown',
+    paddingVertical: 10,
+    paddingHorizontal: '23%',
+    borderRadius: 6,
+    marginVertical: 10,
   },
+  buttonText: {
+    color: 'white',
+    fontSize: 20,
+    textAlign: 'center',
+  }
 })
 
 export default SortingAlgoChoice
