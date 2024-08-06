@@ -65,6 +65,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  finishedText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginVertical: 100,
+  },
+  finishedSubtitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginVertical: -95,
+  },
+  timerButton: {
+    backgroundColor: '#6D2C2A',
+    paddingVertical: 10,
+    paddingHorizontal: 50,
+    borderRadius: 6,
+    borderColor: '#4F1A15',
+    borderWidth: 3,
+    marginBottom: 450,
+  },
+  sortingAlgoText: {
+    color: 'white',
+    fontSize: 18,
+    textAlign: 'center',
+    fontFamily: 'Roboto-Bold',
+  },
   title: {
     fontSize: 25,
     textAlign: 'center',

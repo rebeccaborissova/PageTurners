@@ -4,6 +4,7 @@ import Swiper from 'react-native-deck-swiper';
 
 const Swiping = ({navigation, route}) => {
   const { book_id } = route.params;
+  const { sortingAlgorithm } = route.params;  
 
   const [books, setBooks] = useState([]);
   const [likedBooks, setLikedBooks] = useState([]);
@@ -55,6 +56,20 @@ const Swiping = ({navigation, route}) => {
     swiperRef.current.swipeLeft();
   };
 
+  const handleDislike = () => {
+    console.log("Left swipe.");
+    swiperRef.current.swipeLeft();
+  }
+
+  const handleLike = () => {
+    console.log("Right swipe.");
+    swiperRef.current.swipeRight();
+  }
+
+  const handleViewSaved = () => {
+    console.log("Viewing saved");
+  }
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -100,9 +115,25 @@ const Swiping = ({navigation, route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'red',
+    backgroundColor: '#F5E6E1',
     alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  logo: {
+    marginTop: 15,
+    width: 200,
+    height: 175,
+    resizeMode: 'contain', 
+  },
+  cardContainer: {
+    flex: 1,
+    width: '85%',
+    backgroundColor: 'white',
+    marginBottom: 100,
+    borderRadius: 20,
+    borderColor: 'black',
     justifyContent: 'center',
+    alignItems: 'center',
   },
   card: {
     flex: 1,
@@ -111,7 +142,6 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     justifyContent: 'center',
     backgroundColor: 'white',
-    padding: 20,
   },
   text: {
     fontSize: 22,
@@ -123,33 +153,38 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#888',
   },
-  dislikeButton: {
+  bottomContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
     position: 'absolute',
     bottom: 20,
-    left: 20,
-    backgroundColor: 'red',
-    borderRadius: 50,
-    width: 60,
-    height: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
-  likeButton: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
-    backgroundColor: 'green',
+  thumbsDownButton: {
     borderRadius: 50,
-    width: 60,
-    height: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 10,
   },
-  buttonText: {
-    fontSize: 24,
-    color: '#fff',
-    textAlign: 'center',
-    lineHeight: 60, // Center text vertically
+  thumbsUpButton: {
+    borderRadius: 50,
+    padding: 10,
+  },
+  bookshelfButton: {
+    borderRadius: 5,
+    paddingVertical: 2,
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bookshelf: {
+    width: 70,
+    height: 60,
+  },
+  icons: {
+    width: 50,
+    height: 50,
+    backgroundColor: 'white',
+    borderRadius: 100,
+    borderWidth: 2,
   },
   loadingContainer: {
     flex: 1,
