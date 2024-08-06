@@ -23,8 +23,8 @@ const SortingAlgoChoice = ({ navigation }) => {
     }).start();
   }, [fadeAnim, transYAnim]);
 
-  const sortingChoice = (sortAlgoChoice) => {
-    navigation.navigate('BookSearch', { sortingAlgorithm: sortAlgoChoice});
+  const sortingChoice = (sortingAlgo) => {
+    navigation.navigate('BookSearch', { sortingAlgo: sortingAlgo});
   };
 
   return (
@@ -39,13 +39,13 @@ const SortingAlgoChoice = ({ navigation }) => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.customButton}
-            onPress={() => sortingChoice('Quick Sort')}>
-            <Text style={styles.buttonText}> Quick Sort </Text>
+            onPress={() => sortingChoice('radix')}>
+            <Text style={styles.buttonText}> Radix Sort </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.customButton}
-            onPress={() => sortingChoice('Tim Sort')}>
+            onPress={() => sortingChoice('tim')}>
             <Text style={styles.buttonText}> Tim Sort </Text>
           </TouchableOpacity>
         </View>

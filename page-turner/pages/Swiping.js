@@ -2,15 +2,20 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import images from '../constants/images';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-const Swiping = ({navigation, route}) => {
-  const { book_id } = route.params;
-  const { sortingAlgorithm } = route.params;  
+const Swiping = () => {
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { bookId } = route.params;
+  const { sortingAlgo } = route.params;
+  console.log(bookId);
 
   const [books, setBooks] = useState([]);
   const [likedBooks, setLikedBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [sortTimes, setSortTimes] = useState({ timSort: 0, quickSort: 0 });
   const swiperRef = useRef(null);
 
   useEffect(() => {
@@ -18,17 +23,28 @@ const Swiping = ({navigation, route}) => {
       setLoading(true);
 
       try {
-        let response = await fetch(`https://actual-terribly-longhorn.ngrok-free.app/test`);
+        const response = await fetch(`https://actual-terribly-longhorn.ngrok-free.app/similar-books/${bookId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        
         let data = await response.json();
+        console.log("Received data:", JSON.stringify(data, null, 2));
 
         const similarBooks = data.similar_books.map(item => ({
           id: item.book.id,
           title: item.book.title,
-          author: item.book.authors[0] || 'Unknown Author',
-          subjects: item.book.subjects.join(', ') || 'Unknown Subjects'
+          author: item.book.authors || 'Unknown Author',
+          subjects: Array.isArray(item.book.subjects) ? item.book.subjects.join(', ') : (item.book.subjects || 'No subjects available')
         }));
 
         setBooks(similarBooks);
+        setSortTimes({
+          timSort: data.tim_sort_time,
+          quickSort: data.quick_sort_time
+        });
       } catch (error) {
         console.error("Error fetching books:", error);
       } finally {
@@ -37,11 +53,10 @@ const Swiping = ({navigation, route}) => {
     };
 
     fetchBooks();
-  }, [book_id]);
+  }, [bookId]);
 
   const addLikedBook = useCallback((book) => {
     setLikedBooks((prevLikedBooks) => {
-      // Check if the book is already in the liked books array
       if (!prevLikedBooks.some(likedBook => likedBook.id === book.id)) {
         return [...prevLikedBooks, book];
       }
@@ -57,8 +72,8 @@ const Swiping = ({navigation, route}) => {
   const handleSwipedAll = useCallback(() => {
     console.log('All cards swiped');
     console.log('Liked Books:', likedBooks);
-    navigation.navigate('BookRecSummary', {likedBooks: likedBooks, sortingAlgorithm});
-  }, [likedBooks, navigation, sortingAlgorithm]);
+    navigation.navigate('BookRecSummary', { likedBooks: likedBooks, sortingAlgo: sortingAlgo, sortTimes: sortTimes, canReturn: false });
+  }, [likedBooks, navigation, sortTimes]);
 
   const handleDislike = useCallback(() => {
     console.log("Left swipe.");
@@ -74,8 +89,9 @@ const Swiping = ({navigation, route}) => {
 
   const handleViewSaved = useCallback(() => {
     console.log("Viewing saved");
-    navigation.navigate('BookRecSummary', {likedBooks: likedBooks, sortingAlgorithm});
-  }, [likedBooks, navigation, sortingAlgorithm]);
+    console.log("likedBooks", likedBooks);
+    navigation.navigate('BookRecSummary', { likedBooks: likedBooks, sortingAlgo: sortingAlgo, sortTimes: sortTimes, canReturn: true });
+  }, [likedBooks, navigation, sortTimes]);
 
   if (loading) {
     return (
@@ -88,24 +104,19 @@ const Swiping = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      
-      {/* adding top container */}
-      <View style = {styles.topContainer}>
-        <Image source = {images.logo} style = {styles.logo} />
+      <View style={styles.topContainer}>
+        <Image source={images.logo} style={styles.logo} />
       </View>
-      
 
-      <View style = {styles.middleContainer}>
-        {/* items within the card */}
+      <View style={styles.middleContainer}>
         {books.length > 0 ? (
           <Swiper
             ref={swiperRef}
             cards={books} 
             renderCard={(card) => (
               <View style={styles.card}>
-                <Text style={styles.text}>
-                  {card.title}
-                </Text>
+                <Text style={styles.text}>{card.title}</Text>
+                <Text style={styles.author}>{card.author}</Text>
                 <Text style={styles.subjects}>{card.subjects}</Text>
               </View>
             )}
@@ -114,38 +125,35 @@ const Swiping = ({navigation, route}) => {
             stackSize={3}
             containerStyle={styles.swiperContainer}
             onSwipedLeft={() => setCurrentIndex(prevIndex => prevIndex + 1)}
-            onSwipedRight={() => setCurrentIndex(prevIndex => prevIndex + 1)}
+            onSwipedRight={(cardIndex) => {
+              setCurrentIndex(prevIndex => prevIndex + 1);
+              handleSwipeRight(cardIndex);
+            }}
           />
         ) : (
           <Text>No books available</Text>
         )}
-      </View> 
-     
+      </View>
       
-      {/* love, dislike, view library */}
-      <View style = {styles.bottomContainer}>
-        <TouchableOpacity style = {styles.bookshelfButton} onPress={handleViewSaved}>
+      <View style={styles.bottomContainer}>
+        <TouchableOpacity style={styles.bookshelfButton} onPress={handleViewSaved}>
           <Image source={images.bookshelf} style={styles.bookshelf} />
         </TouchableOpacity>
 
-        <TouchableOpacity style = {styles.heart} onPress={handleLike}>
+        <TouchableOpacity style={styles.heart} onPress={handleLike}>
           <Image source={images.heart} style={styles.icons} />
         </TouchableOpacity>
       </View>
-
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  // overall container
   container: {
     flex: 1,
     backgroundColor: '#F5E6E1',
     position: 'relative',
   },
-
-  // top container
   topContainer: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -159,8 +167,6 @@ const styles = StyleSheet.create({
     height: 175,
     resizeMode: 'contain', 
   },
-
-  // middle container (card portions)
   middleContainer: {
     backgroundColor: 'black',
     zIndex: 2,
@@ -196,17 +202,20 @@ const styles = StyleSheet.create({
     fontSize: 22,
     textAlign: 'center',
     fontFamily: 'Roboto-Bold',
+    marginBottom: 10,
+  },
+  author: {
+    fontSize: 18,
+    textAlign: 'center',
+    fontFamily: 'Roboto-Regular',
+    marginBottom: 20,
   },
   subjects: {
-    marginTop: 30,
     fontSize: 16,
     textAlign: 'center',
     color: '#888',
     fontFamily: 'Roboto-Italic',
   },
-
-
-  // bottom container (likes, dislikes, library)
   bottomContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',

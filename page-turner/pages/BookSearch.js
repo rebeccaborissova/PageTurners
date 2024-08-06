@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Animated, Image } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Animated, Image, Alert } from 'react-native';
 import images from '../constants/images'; 
 import Footer from '../components/footer';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -7,7 +7,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 const BookSearch = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { sortingAlgorithm } = route.params;
+  const { sortingAlgo } = route.params;
   const [bookName, setBookName] = useState('');
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -28,18 +28,34 @@ const BookSearch = () => {
   }, [fadeAnim, transYAnim]);
   
   const searchBook = async () => {
-    const response = await fetch("https://actual-terribly-longhorn.ngrok-free.app/get-book-id", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        title: bookName,
-      }),
-    });
-    const book_id = JSON.parse(await response.text()).id;
-    console.log('Searching for:', book_id);
-    navigation.navigate('Swiping', { book_id: book_id, sortingAlgorithm });
+    try {
+      const response = await fetch("https://actual-terribly-longhorn.ngrok-free.app/get-book-id", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: bookName,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      
+      if (data.id) {
+        const bookId = data.id;
+        console.log('Searching for:', bookId);
+        navigation.navigate('Swiping', { bookId: bookId, sortingAlgo: sortingAlgo });
+      } else {
+        Alert.alert("Error", "Book not found. Please try again.");
+      }
+    } catch (error) {
+      console.error('Error searching book:', error);
+      Alert.alert("Error finding book", "This book does not exist in our records. Please try again");
+    }
   }
   
   return (

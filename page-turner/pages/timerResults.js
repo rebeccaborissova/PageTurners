@@ -9,11 +9,11 @@ const TimerResults = ({ navigation }) => {
   const transYAnim = useRef(new Animated.Value(-70)).current;
   const route = useRoute();
 
-  const { sortingAlgorithm } = route.params;
-  console.log(sortingAlgorithm);
+  const { sortingAlgo } = route.params;
+  console.log("sortingAlgo", sortingAlgo);
 
   const correctAlgorithm = 'Tim Sort'; // TODO: change placeholder to correct algorithm from CSV file data
-  const userIsCorrect = sortingAlgorithm === correctAlgorithm;
+  const userIsCorrect = sortingAlgo === correctAlgorithm;
 
   // initalzing state of next to be false (next will not appear)
   const [showButton, setShowButton] = useState(false);
@@ -54,7 +54,7 @@ const TimerResults = ({ navigation }) => {
         {/* User Selected Sort */}
         <View style = {styles.selectedSortText}>
           <Text style={styles.subTitle}>Selected Sort </Text>
-          <Text style={styles.selectedSort}>{sortingAlgorithm}</Text>
+          <Text style={styles.selectedSort}>{sortingAlgo}</Text>
         </View>
         
         {/* Time Analysis */}

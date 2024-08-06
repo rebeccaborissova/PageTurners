@@ -6,8 +6,7 @@ import images from '../constants/images';
 const BookRecSummary = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { likedBooks } = route.params;
-  const { sortingAlgorithm } = route.params; 
+  const { likedBooks, sortingAlgo, sortTimes, canReturn } = route.params;
 
   // Working to establish fade-in transition
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -21,11 +20,11 @@ const BookRecSummary = () => {
   }, [fadeAnim]);
 
   const handleToTimerResults = () => {
-    navigation.navigate('TimerResults', { sortingAlgorithm });
+    navigation.navigate('TimerResults', { sortingAlgo });
   }
 
   const handleReturnToSwiping = () => {
-    navigation.navigate('Swiping', { likedBooks, sortingAlgorithm });
+    navigation.navigate('Swiping', { likedBooks, sortingAlgo });
   }
 
   const renderBookItem = ({ item }) => (
@@ -57,14 +56,16 @@ const BookRecSummary = () => {
         ) : (
           <Text style={styles.noBooksText}>No books liked yet!</Text>
         )}
-        <View style={styles.returnButtonContainer}>
-          <TouchableOpacity
-            style={styles.returnButton}
-            onPress={handleReturnToSwiping}
-          >
-            <Text style={styles.returnButtonText}>Return to Swiping</Text>
-          </TouchableOpacity>
-        </View>
+        {canReturn && (
+          <View style={styles.returnButtonContainer}>
+            <TouchableOpacity
+              style={styles.returnButton}
+              onPress={handleReturnToSwiping}
+            >
+              <Text style={styles.returnButtonText}>Return to Swiping</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </Animated.View>
     </View>
   );
@@ -81,7 +82,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-
   },
   finishedText: {
     fontSize: 20,
@@ -89,7 +89,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginTop: 50,
-  
   },
   subFinishedText: {
     fontSize: 14,
@@ -153,7 +152,6 @@ const styles = StyleSheet.create({
   bookSubjects: {
     fontSize: 14,
     color: '#777',
-    
   },
   noBooksText: {
     fontSize: 18,

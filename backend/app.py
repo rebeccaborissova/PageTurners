@@ -13,11 +13,12 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %
 logger = logging.getLogger(__name__)
 
 class Book:
-    def __init__(self, id, subjects, title, authors):
+    def __init__(self, id, subjects, title, authors, similarity_score=0):
         self.id = id
-        self.subjects = subjects.split(', ') if isinstance(subjects, str) else []
+        self.subjects = subjects if isinstance(subjects, list) else subjects.split(', ') if subjects else []
         self.title = title
         self.authors = authors
+        self.similarity_score = similarity_score
 
     def to_dict(self):
         return {
@@ -52,10 +53,42 @@ except Exception as e:
     logger.error(f"Error loading books data: {e}")
     books = []
 
+def radix_sort(book_list):
+    RADIX = 10
+    max_length = False
+    placement = 1
+    max_digit = max(int(book.similarity_score * 1e9) for book in book_list)
+
+    while not max_length:
+        buckets = [[] for _ in range(RADIX)]
+        for book in book_list:
+            tmp = int(book.similarity_score * 1e9)
+            bucket_index = (tmp // placement) % RADIX
+            buckets[bucket_index].append(book)
+
+        a = 0
+        for bucket in buckets:
+            for book in bucket:
+                book_list[a] = book
+                a += 1
+
+        placement *= RADIX
+        if max_digit < placement:
+            max_length = True
+
+    # Reverse the list to get descending order
+    book_list.reverse()
+    return book_list
+
+def tim_sort(book_list):
+    # Python's built-in sort uses Timsort
+    return sorted(book_list, key=lambda x: x.similarity_score, reverse=True)
+
 @app.route('/similar-books/<book_id>', methods=['GET'])
 def get_similar_books(book_id):
     start_time = time.time()
-    logger.debug(f"Received request for book_id: {book_id}")
+
+    logger.debug(f"Received request for book ID: {book_id}")
     
     input_book = next((book for book in books if book.id == book_id), None)
     
@@ -69,29 +102,43 @@ def get_similar_books(book_id):
     similarity_scores = []
     logger.debug("Starting similarity calculations")
     for i, book in enumerate(books):
-        if book.id != book_id:
+        if book.id != input_book.id:
             similarity = calculate_similarity(input_book, book)
-            similarity_scores.append((book, similarity))
+            similarity_scores.append(Book(id=book.id, subjects=book.subjects, title=book.title, authors=book.authors, similarity_score=similarity))
         if i % 1000 == 0:
             logger.debug(f"Processed {i} books")
 
     logger.debug("Sorting similarity scores")
-    similarity_scores.sort(key=lambda x: x[1], reverse=True)
+    
+    # Radix Sort
+    radix_start = time.time()
+    radix_sorted = radix_sort(similarity_scores.copy())
+    radix_end = time.time()
+    radix_sort_time = radix_end - radix_start
+
+    # Tim Sort
+    tim_start = time.time()
+    tim_sorted = tim_sort(similarity_scores.copy())
+    tim_end = time.time()
+    tim_sort_time = tim_end - tim_start
 
     logger.debug("Preparing top 5 similar books")
     top_5_similar = [
         {
             "book": book.to_dict(),
-            "similarity_score": score
-        } for book, score in similarity_scores[:5]
+            "similarity_score": book.similarity_score,
+        } for book in radix_sorted[:5]  # Using Radix Sort result for top 5
     ]
 
     end_time = time.time()
-    logger.info(f"Returning 5 similar books for book_id: {book_id}. Process took {end_time - start_time:.2f} seconds")
+    logger.info(f"Returning 5 similar books for book ID: {book_id}. Process took {end_time - start_time:.2f} seconds")
     logger.debug(f"Top 5 similar books: {[book['book']['title'] for book in top_5_similar]}")
+    
     return jsonify({
         "input_book": input_book.to_dict(),
-        "similar_books": top_5_similar
+        "similar_books": top_5_similar,
+        "radix_sort_time": radix_sort_time,
+        "tim_sort_time": tim_sort_time
     })
 
 @app.route('/get-book-id', methods=['POST'])
@@ -104,8 +151,7 @@ def get_book_id():
     title = data['title']
     logger.debug(f"Received request to find ID for book title: {title}")
 
-    # Fuzzy matching
-    threshold = 95  # Adjust this value to change the strictness of matching
+    threshold = 95
     matching_books = []
     for book in books:
         ratio = fuzz.ratio(book.title.lower(), title.lower())
@@ -123,7 +169,7 @@ def get_book_id():
         return jsonify({
             "warning": "Multiple books found with similar titles",
             "books": [{"id": book.id, "title": book.title} 
-                      for book, ratio in matching_books[:5]]  # Return top 5 matches
+                      for book, _ in matching_books[:20]]
         })
 
     matching_book, ratio = matching_books[0]
@@ -133,92 +179,6 @@ def get_book_id():
         "id": matching_book.id,
         "title": matching_book.title
     })
-
-@app.route('/test', methods=['GET'])
-def test():
-    response_data = {
-        "input_book": {
-            "authors": "OL92945A",
-            "id": "OL1000307W",
-            "subjects": [
-                "Virtual reality; Fiction; Adventures and adventurers; Adventure and adventurers; Magic",
-                "fiction; Fantasy fiction; Children's fiction"
-            ],
-            "title": "Book of reality"
-        },
-        "similar_books": [
-            {
-                "book": {
-                    "authors": "OL8268773A",
-                    "id": "OL21618595W",
-                    "subjects": [
-                        "Children's fiction; Fantasy fiction; Adventure and adventurers",
-                        "fiction"
-                    ],
-                    "title": "Eirwen and the Gossamer Rainbow"
-                },
-                "similarity_score": 0.8595449691332423,
-                "quicksort_time": 2.1,
-                "timsort_time": 1.5
-            },
-            {
-                "book": {
-                    "authors": "OL890140A",
-                    "id": "OL4464863W",
-                    "subjects": [
-                        "Children's fiction; Fantasy fiction; Adventure and adventurers",
-                        "fiction"
-                    ],
-                    "title": "Sorcerers Trap"
-                },
-                "similarity_score": 0.8595449691332423,
-                "quicksort_time": 3,
-                "timsort_time": 2
-            },
-            {
-                "book": {
-                    "authors": "OL1709245A",
-                    "id": "OL6445623W",
-                    "subjects": [
-                        "Fiction; Adventure and adventurers",
-                        "fiction; Children's fiction"
-                    ],
-                    "title": "In search of the petroglyph"
-                },
-                "similarity_score": 0.8334793058769957,
-                "quicksort_time": 1.4,
-                "timsort_time": 0.8
-            },
-            {
-                "book": {
-                    "authors": "OL33122A",
-                    "id": "OL497775W",
-                    "subjects": [
-                        "Fiction; Children's fiction; Adventure and adventurers",
-                        "fiction"
-                    ],
-                    "title": "Abduction"
-                },
-                "similarity_score": 0.8334793058769957,
-                "quicksort_time": 1.5,
-                "timsort_time": 0.9
-            },
-            {
-                "book": {
-                    "authors": "OL7275243A",
-                    "id": "OL24159416W",
-                    "subjects": [
-                        "Adventure and adventurers; Fiction; Children's fiction"
-                    ],
-                    "title": "The demon's watch"
-                },
-                "similarity_score": 0.8263747420527221,
-                "quicksort_time": 1.7,
-                "timsort_time": 1.1
-            }
-        ]
-    }
-    return jsonify(response_data)
 
 if __name__ == '__main__':
     app.run(debug=True, port=3001)
