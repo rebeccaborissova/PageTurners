@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Animated } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import images from '../constants/images';
+import Footer from '../components/footer';
 
 const TimerResults = ({ navigation }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -9,7 +10,7 @@ const TimerResults = ({ navigation }) => {
   const route = useRoute();
 
   const { sortingAlgorithm } = route.params;
-  //console.log(sortingAlgorithm);
+  console.log(sortingAlgorithm);
 
   const correctAlgorithm = 'Tim Sort'; // TODO: change placeholder to correct algorithm from CSV file data
   const userIsCorrect = sortingAlgorithm === correctAlgorithm;
@@ -43,6 +44,7 @@ const TimerResults = ({ navigation }) => {
         ]}
       >
         <Text style={styles.title}>Sorting Algorithms</Text>
+        <Image source={images.line} style={styles.line} />
         <Text style={styles.subTitle}>Selected Sort:</Text>
         <Text style={styles.selectedSort}>{sortingAlgorithm}</Text>
         <Image source={images.line} style={styles.line} />
@@ -50,9 +52,9 @@ const TimerResults = ({ navigation }) => {
         <View style={styles.timeAnalysisContainer}>
           <Image source={images.clockIcon} style={styles.clockIcon} />
           <View>
-            <Text style={styles.timeAnalysis}>Time Analyses</Text>
-            <Text style={styles.time}>Quick Sort: 000</Text>
-            <Text style={styles.time}>Tim Sort: 000</Text>
+            <Text style={styles.timeAnalysis}>Time Analysis</Text>
+            <Text style={styles.time}>Quick Sort: 0.0000 seconds</Text>
+            <Text style={styles.time}>Tim Sort: 0.0000 seconds</Text>
           </View>
         </View>
 
@@ -60,7 +62,7 @@ const TimerResults = ({ navigation }) => {
           <Text style={styles.resultButtonText}>
             {userIsCorrect
               ? `Congratulations! ${correctAlgorithm} is the faster option.`
-              : `Clearly... ${correctAlgorithm} was the better option.`}
+              : `Clearly ... ${correctAlgorithm} was the better option.`}
           </Text>
         </TouchableOpacity>
 
@@ -70,6 +72,7 @@ const TimerResults = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </Animated.View>
+      <Footer />
     </View>
   );
 };
@@ -83,8 +86,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     marginTop: 20,
-    width: 100,
-    height: 100,
+    width: 200,
+    height: 200,
   },
   contentContainer: {
     flex: 1,
@@ -95,25 +98,27 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#6D2C2A',
-    fontSize: 24,
+    fontSize: 42,
     fontWeight: 'bold',
     marginBottom: 10,
     marginTop: 40,
+    fontFamily: 'Roboto-BlackItalic',
   },
   subTitle: {
-    color: '#6D2C2A',
-    fontSize: 18,
+    color: '#000000',
+    fontSize: 25,
     marginBottom: 5,
+    fontFamily: 'Roboto-Bold',
   },
   selectedSort: {
-    color: '#6D2C2A',
+    color: '#000000',
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: 'Roboto-Italic',
     marginBottom: 10,
   },
   line: {
-    width: 200,
-    height: 2,
+    width: 500,
+    height: 3,
     marginVertical: 15,
   },
   timeAnalysisContainer: {
@@ -122,44 +127,54 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   clockIcon: {
-    width: 50,
-    height: 50,
-    marginRight: 10,
+    width: 200,
+    height: 200,
+    marginRight: -5,
   },
   timeAnalysis: {
-    fontSize: 18,
-    color: '#6D2C2A',
+    fontSize: 25,
+    color: '#000000',
     marginBottom: 5,
+    marginLeft: -7,
+    fontFamily: 'Roboto-Bold',
   },
   time: {
     fontSize: 16,
-    color: '#6D2C2A',
+    color: '#000000',
+    marginBottom: 5,
+    marginLeft: -5,
+    marginRight: 30,
+    fontFamily: 'Roboto-Italic',
   },
   resultButton: {
     backgroundColor: '#6D2C2A',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 50,
     borderRadius: 6,
+    borderColor: '#4F1A15',
+    borderWidth: 3,
     marginBottom: 20,
   },
   resultButtonText: {
     color: 'white',
     fontSize: 18,
     textAlign: 'center',
+    fontFamily: 'Roboto-MediumItalic',
   },
   buttonContainer: {
-    marginTop: 20,
+    marginTop: 15,
   },
   customButton: {
-    backgroundColor: '#6D2C2A',
+    backgroundColor: '#F5E6E1',
     paddingVertical: 10,
     paddingHorizontal: 40,
     borderRadius: 6,
   },
   buttonText: {
-    color: 'white',
+    color: '#6D2C2A',
     fontSize: 18,
     textAlign: 'center',
+    marginTop: -8,
   }
 });
 
