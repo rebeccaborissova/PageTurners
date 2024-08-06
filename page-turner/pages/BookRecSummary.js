@@ -32,7 +32,6 @@ const BookRecSummary = () => {
     <View style={styles.bookItem}>
       <Image source={images.heart} style={styles.heartImage} />
       <Text style={styles.bookTitle}>{item.title}</Text>
-      <Text style={styles.bookAuthor}>Author: {item.author || 'Unknown'}</Text>
       <Text style={styles.bookSubjects}>Subjects: {item.subjects || 'Not Available'}</Text>
     </View>
   );
@@ -151,13 +150,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-  bookAuthor: {
-    fontSize: 16,
-    color: '#555',
-  },
   bookSubjects: {
     fontSize: 14,
     color: '#777',
+    
   },
   noBooksText: {
     fontSize: 18,
