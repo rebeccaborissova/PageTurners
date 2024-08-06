@@ -83,8 +83,9 @@ const Swiping = () => {
       {/* items within the card */}
       <View style = {styles.cardContainer}>
         {books.length > 0 ? (
+          // swiper component
           <Swiper
-            cards={books}
+            cards={books} // books list -> swiper component
             renderCard={(card) => (
               <View style={styles.card}>
                 <Text style={styles.text}>
@@ -96,8 +97,9 @@ const Swiping = () => {
             onSwipedRight={handleSwipeRight}
             onSwipedAll={handleSwipedAll}
             cardIndex={0}
-            backgroundColor={'#f0f1f2'}
+            backgroundColor={'#F5E6E1'}
             stackSize={3}
+            containerStyle={styles.swiperContainer} 
           />
         ) : (
           <Text>No books available</Text>
@@ -128,7 +130,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5E6E1',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
+    padding: 10,
+  },
+  swiperContainer: {
+    width: '100%',
+    height: '100%',
   },
   logo: {
     marginTop: 15,
@@ -138,21 +145,24 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     flex: 1,
-    width: '85%',
-    backgroundColor: 'white',
-    marginBottom: 100,
-    borderRadius: 20,
-    borderColor: 'black',
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#fff',
   },
   card: {
-    flex: 1,
+    width: 300,
+    height: 400,
     borderRadius: 10,
-    borderWidth: 2,
-    borderColor: 'white',
-    justifyContent: 'center',
-    backgroundColor: 'white',
+    backgroundColor: '#f8f9fa',
+    padding: 20,
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 3,
   },
   text: {
     fontSize: 22,
@@ -164,6 +174,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#888',
   },
+
+  // likes, dislikes, library
   bottomContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -197,6 +209,8 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 2,
   },
+
+  // loading screen style
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
