@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     footerText: {
         fontSize: 12,
         marginTop: 3,
-        fontFamily: 'Roboto-Medium',
+        fontFamily: 'Roboto-Light',
     },
 });
 
