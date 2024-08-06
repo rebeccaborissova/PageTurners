@@ -39,7 +39,7 @@ const Swiping = () => {
         } else {
           messageIndex = (messageIndex + 1) % messages.length;
         }
-      }, 1000);
+      }, 10000);
 
       try {
         const response = await fetch(`https://actual-terribly-longhorn.ngrok-free.app/similar-books/${bookId}`, {
@@ -137,7 +137,7 @@ const Swiping = () => {
           <Image source={images.logo} style={styles.loadingLogo} />
           <ActivityIndicator size="large" color="#6D2C2A" style={styles.loadingIndicator} />
           <View style={styles.loadingTextContainer}>
-            <Text style={styles.loadingTitle}>Crafting Your Perfect Reads</Text>
+            <Text style={styles.loadingTitle}>Please be patient, we are carefully crafting your book recommendations</Text>
             <Text style={styles.loadingText}>{loadingMessage}</Text>
           </View>
         </View>
@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   loadingTitle: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#000',
     textAlign: 'center',
