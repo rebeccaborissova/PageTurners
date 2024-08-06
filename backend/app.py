@@ -80,9 +80,64 @@ def radix_sort(book_list):
     book_list.reverse()
     return book_list
 
+def insertion_sort(books, left_score, right_score):
+    for i in range(left_score + 1, right_score + 1):
+        key_title = books[i]
+        key_score = key_title.similarity_score
+        j = i - 1
+
+        # inner loop will not execute if subarray is already sorted
+        while key_score > books[j].similarity_score and j >= left_score:
+            books[j + 1] = books[j]
+            j -= 1
+
+        books[j + 1] = key_title
+
+
+# Merge sort helper method for Tim sort
+def merge(left_titles, right_titles):
+    result_titles = []
+    i = 0
+    j = 0
+
+    while i < len(left_titles) and j < len(right_titles):
+        if left_titles[i].similarity_score < right_titles[j].similarity_score:
+            result_titles.append(left_titles[i])
+            i += 1
+        else:
+            result_titles.append(right_titles[j])
+            j += 1
+
+    result_titles = result_titles + left_titles[i:] + right_titles[j:]
+    return result_titles
+
+
+# Tim sort method
 def tim_sort(book_list):
-    # Python's built-in sort uses Timsort
-    return sorted(book_list, key=lambda x: x.similarity_score, reverse=True)
+    # initialize run size
+    run = 64
+
+    list_length = len(book_list)
+
+    for start in range(0, list_length, run):
+        end = min(start + run - 1, list_length - 1)
+        insertion_sort(book_list, start, end)
+
+    size = run
+    while size < list_length:
+        for left in range(0, list_length, size * 2):
+            midpoint = min(left + size - 1, list_length - 1)
+            right = min(left + 2 * size - 1, list_length - 1)
+
+            if midpoint < right:
+                left_titles = book_list[left: midpoint + 1]
+                right_titles = book_list[midpoint + 1: right + 1]
+
+                titles_merged = merge(left_titles, right_titles)
+
+                book_list[left: left + len(titles_merged)] = titles_merged
+
+        size *= 2
 
 @app.route('/similar-books/<book_id>', methods=['GET'])
 def get_similar_books(book_id):
