@@ -14,9 +14,8 @@ const Swiping = () => {
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [sortTimes, setSortTimes] = useState({ timSort: 0, radixSort: 0 });
+  const [showPopup, setShowPopup] = useState(true);
   const swiperRef = useRef(null);
-  const[alertVisible, setAlertVisible] = useState(false);
-
 
   const [loadingMessage, setLoadingMessage] = useState("Flipping through pages...");
 
@@ -69,11 +68,22 @@ const Swiping = () => {
       } finally {
         clearInterval(messageInterval);
         setLoading(false);
+        showWelcomePopup();
       }
     };
 
     if(shouldFetch) fetchBooks();
   }, [bookId]);
+
+  const showWelcomePopup = () => {
+    Alert.alert(
+      "Welcome!",
+      "Press the heart to like a book, swipe left or right to skip. Your liked books will be saved for you to view later!",
+      [
+        { text: "Got it!", onPress: () => setShowPopup(false) }
+      ]
+    );
+  };
 
   const addLikedBook = useCallback((book) => {
     setLikedBooks((prevLikedBooks) => {
@@ -95,14 +105,10 @@ const Swiping = () => {
     navigation.navigate('BookRecSummary', { likedBooks: likedBooks, sortingAlgo: sortingAlgo, sortTimes: sortTimes, canReturn: false });
   }, [likedBooks, navigation, sortTimes]);
 
-  const handleDislike = useCallback(() => {
-    console.log("Left swipe.");
-    swiperRef.current.swipeLeft();
-  }, []);
-
   const handleLike = useCallback(() => {
     const cardIndex = currentIndex;
-    handleSwipeRight(cardIndex);
+    const likedBook = books[cardIndex];
+    addLikedBook(likedBook);
     console.log("Right swipe.");
     swiperRef.current.swipeRight();
   }, [currentIndex, handleSwipeRight]);
@@ -113,24 +119,7 @@ const Swiping = () => {
     navigation.navigate('BookRecSummary', { likedBooks: likedBooks, sortingAlgo: sortingAlgo, sortTimes: sortTimes, canReturn: true });
   }, [likedBooks, navigation, sortTimes]);
 
-  // alert after loading is complete to show swiping/hearting instructions
-  useEffect(() => {
-    if (!loading && !alertVisible) {
-      Alert.alert(
-        "How to Use",
-        "Swipe to dislike a book, press the heart button to save a book, and view your saved books by pressing the bookshelf button!",
-        [
-          {
-            text: "OK",
-            onPress: () => setAlertVisible(true), // alert is visible after the user presses OK
-          }
-        ]
-      );
-    }
-  }, [loading, alertVisible]); // depend on the loading and alertVisible state
-
-
-  if (loading || !alertVisible) {
+  if (loading) {
     return (
       <View style={styles.loadingContainer}>
         <View style={styles.loadingContent}>
@@ -143,6 +132,10 @@ const Swiping = () => {
         </View>
       </View>
     );
+  }
+
+  if (!loading && showPopup) {
+    return null;
   }
 
   return (
@@ -159,7 +152,6 @@ const Swiping = () => {
             renderCard={(card) => (
               <View style={styles.card}>
                 <Text style={styles.text}>{card.title}</Text>
-                <Text style={styles.author}>{card.author}</Text>
                 <Text style={styles.subjects}>{card.subjects}</Text>
               </View>
             )}
@@ -170,7 +162,6 @@ const Swiping = () => {
             onSwipedLeft={() => setCurrentIndex(prevIndex => prevIndex + 1)}
             onSwipedRight={(cardIndex) => {
               setCurrentIndex(prevIndex => prevIndex + 1);
-              handleSwipeRight(cardIndex);
             }}
           />
         ) : (
