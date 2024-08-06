@@ -108,7 +108,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   card: {
-    flex: 1,
+    width: 300,
+    height: 400,
     borderRadius: 10,
     borderWidth: 2,
     borderColor: '#6D2C2A',
@@ -165,6 +166,8 @@ const styles = StyleSheet.create({
     color: '#6D2C2A',
     fontFamily: 'Roboto-Medium',
   },
+
+  // loading screen style
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
