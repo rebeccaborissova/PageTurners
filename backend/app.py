@@ -157,7 +157,9 @@ def test():
                     ],
                     "title": "Eirwen and the Gossamer Rainbow"
                 },
-                "similarity_score": 0.8595449691332423
+                "similarity_score": 0.8595449691332423,
+                "quicksort_time": 2.1,
+                "timsort_time": 1.5
             },
             {
                 "book": {
@@ -169,7 +171,9 @@ def test():
                     ],
                     "title": "Sorcerers Trap"
                 },
-                "similarity_score": 0.8595449691332423
+                "similarity_score": 0.8595449691332423,
+                "quicksort_time": 3,
+                "timsort_time": 2
             },
             {
                 "book": {
@@ -181,7 +185,9 @@ def test():
                     ],
                     "title": "In search of the petroglyph"
                 },
-                "similarity_score": 0.8334793058769957
+                "similarity_score": 0.8334793058769957,
+                "quicksort_time": 1.4,
+                "timsort_time": 0.8
             },
             {
                 "book": {
@@ -193,7 +199,9 @@ def test():
                     ],
                     "title": "Abduction"
                 },
-                "similarity_score": 0.8334793058769957
+                "similarity_score": 0.8334793058769957,
+                "quicksort_time": 1.5,
+                "timsort_time": 0.9
             },
             {
                 "book": {
@@ -204,7 +212,9 @@ def test():
                     ],
                     "title": "The demon's watch"
                 },
-                "similarity_score": 0.8263747420527221
+                "similarity_score": 0.8263747420527221,
+                "quicksort_time": 1.7,
+                "timsort_time": 1.1
             }
         ]
     }
