@@ -16,7 +16,7 @@ const Swiping = ({navigation, route}) => {
       setLoading(true);
 
       try {
-        let response = await fetch(`https://actual-terribly-longhorn.ngrok-free.app/similar-books/${book_id}`);
+        let response = await fetch(`https://actual-terribly-longhorn.ngrok-free.app/test`);
         let data = await response.json();
 
         const similarBooks = data.similar_books.map(item => ({

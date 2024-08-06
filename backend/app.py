@@ -136,7 +136,79 @@ def get_book_id():
 
 @app.route('/test', methods=['GET'])
 def test():
-    return "Hello world"
+    response_data = {
+        "input_book": {
+            "authors": "OL92945A",
+            "id": "OL1000307W",
+            "subjects": [
+                "Virtual reality; Fiction; Adventures and adventurers; Adventure and adventurers; Magic",
+                "fiction; Fantasy fiction; Children's fiction"
+            ],
+            "title": "Book of reality"
+        },
+        "similar_books": [
+            {
+                "book": {
+                    "authors": "OL8268773A",
+                    "id": "OL21618595W",
+                    "subjects": [
+                        "Children's fiction; Fantasy fiction; Adventure and adventurers",
+                        "fiction"
+                    ],
+                    "title": "Eirwen and the Gossamer Rainbow"
+                },
+                "similarity_score": 0.8595449691332423
+            },
+            {
+                "book": {
+                    "authors": "OL890140A",
+                    "id": "OL4464863W",
+                    "subjects": [
+                        "Children's fiction; Fantasy fiction; Adventure and adventurers",
+                        "fiction"
+                    ],
+                    "title": "Sorcerers Trap"
+                },
+                "similarity_score": 0.8595449691332423
+            },
+            {
+                "book": {
+                    "authors": "OL1709245A",
+                    "id": "OL6445623W",
+                    "subjects": [
+                        "Fiction; Adventure and adventurers",
+                        "fiction; Children's fiction"
+                    ],
+                    "title": "In search of the petroglyph"
+                },
+                "similarity_score": 0.8334793058769957
+            },
+            {
+                "book": {
+                    "authors": "OL33122A",
+                    "id": "OL497775W",
+                    "subjects": [
+                        "Fiction; Children's fiction; Adventure and adventurers",
+                        "fiction"
+                    ],
+                    "title": "Abduction"
+                },
+                "similarity_score": 0.8334793058769957
+            },
+            {
+                "book": {
+                    "authors": "OL7275243A",
+                    "id": "OL24159416W",
+                    "subjects": [
+                        "Adventure and adventurers; Fiction; Children's fiction"
+                    ],
+                    "title": "The demon's watch"
+                },
+                "similarity_score": 0.8263747420527221
+            }
+        ]
+    }
+    return jsonify(response_data)
 
 if __name__ == '__main__':
     app.run(debug=True, port=3001)
