@@ -1,5 +1,6 @@
-# dsa-final-project
-Final project for a Data Structures &amp; Algorithms course that provides users book recommendations
+# Page Turner
+Final project for COP3530 Data Structures &amp; Algorithms.<br>
+This application provides customized book recommendations for a user based on their input.
 
 To run this application, 
 
