@@ -10,6 +10,7 @@ const Swiping = ({navigation, route}) => {
   const [books, setBooks] = useState([]);
   const [likedBooks, setLikedBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const swiperRef = useRef(null);
 
   useEffect(() => {
@@ -55,6 +56,8 @@ const Swiping = ({navigation, route}) => {
   }
 
   const handleLike = () => {
+    const cardIndex = currentIndex;
+    handleSwipeRight(cardIndex);
     console.log("Right swipe.");
     swiperRef.current.swipeRight();
   }
@@ -86,6 +89,7 @@ const Swiping = ({navigation, route}) => {
         {/* items within the card */}
         {books.length > 0 ? (
           <Swiper
+            ref={swiperRef}
             cards={books} 
             renderCard={(card) => (
               <View style={styles.card}>
