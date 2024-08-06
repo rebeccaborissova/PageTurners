@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Image, Alert } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import images from '../constants/images';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -15,6 +15,8 @@ const Swiping = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [sortTimes, setSortTimes] = useState({ timSort: 0, radixSort: 0 });
   const swiperRef = useRef(null);
+  const[alertVisible, setAlertVisible] = useState(false);
+
 
   const [loadingMessage, setLoadingMessage] = useState("Flipping through pages...");
 
@@ -111,7 +113,24 @@ const Swiping = () => {
     navigation.navigate('BookRecSummary', { likedBooks: likedBooks, sortingAlgo: sortingAlgo, sortTimes: sortTimes, canReturn: true });
   }, [likedBooks, navigation, sortTimes]);
 
-  if (loading) {
+  // alert after loading is complete to show swiping/hearting instructions
+  useEffect(() => {
+    if (!loading && !alertVisible) {
+      Alert.alert(
+        "How to Use",
+        "Swipe to dislike a book, press the heart button to save a book, and view your saved books by pressing the bookshelf button!",
+        [
+          {
+            text: "OK",
+            onPress: () => setAlertVisible(true), // alert is visible after the user presses OK
+          }
+        ]
+      );
+    }
+  }, [loading, alertVisible]); // depend on the loading and alertVisible state
+
+
+  if (loading || !alertVisible) {
     return (
       <View style={styles.loadingContainer}>
         <View style={styles.loadingContent}>

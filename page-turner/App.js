@@ -2,14 +2,14 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown';
+
 
 import Home from './pages/Home'
 import SortingAlgoChoice from './pages/SortingAlgoChoice'
 import BookSearch from './pages/BookSearch'
 import Swiping from './pages/Swiping'
 import BookRecSummary from './pages/BookRecSummary'
-import TimerResults from './pages/TimerResults'
+import TimerResults from './pages/timerResults'
 import ThankYou from './pages/ThankYou'
 
 
