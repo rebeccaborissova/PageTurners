@@ -47,7 +47,7 @@ const Swiping = () => {
 
   const handleSwipedAll = () => {
     console.log('All cards swiped');
-    navigation.navigate('BookRecSummary', { sortingAlgorithm }, { likedBooks: likedBooks.map(book => book.title) });
+    navigation.navigate('BookRecSummary', { sortingAlgorithm }, { likedBooks: likedBooks.map(book => book.title)});
   };
 
   if (loading) {
