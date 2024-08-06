@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Animated } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import images from '../constants/images';
@@ -15,6 +15,9 @@ const TimerResults = ({ navigation }) => {
   const correctAlgorithm = 'Tim Sort'; // TODO: change placeholder to correct algorithm from CSV file data
   const userIsCorrect = sortingAlgorithm === correctAlgorithm;
 
+  // initalzing state of next to be false (next will not appear)
+  const [showButton, setShowButton] = useState(false);
+
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
@@ -27,9 +30,16 @@ const TimerResults = ({ navigation }) => {
       duration: 1000,
       useNativeDriver: true,
     }).start();
+
+    // after 5 seconds, showButton set to true
+    const timer = setTimeout(() => {
+      setShowButton(true);
+    }, 5000);
+
+    return() => clearTimeout(timer);
   }, [fadeAnim, transYAnim]);
 
-  const handleRestart = () => {
+  const navigateToThankYou = () => {
     navigation.navigate('ThankYou');
   };
 
@@ -37,27 +47,27 @@ const TimerResults = ({ navigation }) => {
     <View style={styles.selection}>
       <Image source={images.logo} style={styles.logo} />
 
-      <Animated.View
-        style={[
-          styles.contentContainer,
-          { opacity: fadeAnim, transform: [{ translateY: transYAnim }] },
-        ]}
-      >
-        <Text style={styles.title}>Sorting Algorithms</Text>
-        <Image source={images.line} style={styles.line} />
-        <Text style={styles.subTitle}>Selected Sort:</Text>
-        <Text style={styles.selectedSort}>{sortingAlgorithm}</Text>
-        <Image source={images.line} style={styles.line} />
+      <Animated.View style={[styles.contentContainer,{ opacity: fadeAnim, transform: [{ translateY: transYAnim }] },]}>
 
+        <Text style={styles.title}>Sorting Algorithms</Text>
+
+        {/* User Selected Sort */}
+        <View style = {styles.selectedSortText}>
+          <Text style={styles.subTitle}>Selected Sort </Text>
+          <Text style={styles.selectedSort}>{sortingAlgorithm}</Text>
+        </View>
+        
+        {/* Time Analysis */}
         <View style={styles.timeAnalysisContainer}>
           <Image source={images.clockIcon} style={styles.clockIcon} />
-          <View>
+          <View style ={styles.timeAnalysisWords}>
             <Text style={styles.timeAnalysis}>Time Analysis</Text>
-            <Text style={styles.time}>Quick Sort: 0.0000 seconds</Text>
-            <Text style={styles.time}>Tim Sort: 0.0000 seconds</Text>
+            <Text style={styles.time}>Quick Sort: 0.0000s</Text>
+            <Text style={styles.time}>Tim Sort: 0.0000s</Text>
           </View>
         </View>
 
+        {/* results bubble */}
         <TouchableOpacity style={styles.resultButton} disabled>
           <Text style={styles.resultButtonText}>
             {userIsCorrect
@@ -65,13 +75,18 @@ const TimerResults = ({ navigation }) => {
               : `Clearly ... ${correctAlgorithm} was the better option.`}
           </Text>
         </TouchableOpacity>
+      </Animated.View>
 
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.customButton} onPress={handleRestart}>
+      {/* next button */}
+      {/* show button needs to be true for the following condition to be met */}
+      {showButton && (
+        <Animated.View style={styles.buttonContainer} >
+          <TouchableOpacity style={styles.customButton} onPress={navigateToThankYou}>
             <Text style={styles.buttonText}>Next</Text>
           </TouchableOpacity>
-        </View>
-      </Animated.View>
+        </Animated.View>
+      )}
+      
       <Footer />
     </View>
   );
@@ -98,10 +113,10 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#6D2C2A',
-    fontSize: 42,
+    fontSize: 30,
     fontWeight: 'bold',
+    marginTop: -20,
     marginBottom: 10,
-    marginTop: 40,
     fontFamily: 'Roboto-BlackItalic',
   },
   subTitle: {
@@ -110,26 +125,37 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontFamily: 'Roboto-Bold',
   },
+  selectedSortText: {
+    marginTop: 15,
+    paddingTop: 15,
+    paddingBottom: 10,
+    paddingHorizontal: 20,
+    borderColor: 'black',
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    alignItems: 'center',
+  },
   selectedSort: {
     color: '#000000',
     fontSize: 20,
     fontWeight: 'Roboto-Italic',
     marginBottom: 10,
   },
-  line: {
-    width: 500,
-    height: 3,
-    marginVertical: 15,
-  },
+
+  // time analysis
   timeAnalysisContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
+    marginTop: -20,
   },
   clockIcon: {
-    width: 200,
-    height: 200,
-    marginRight: -5,
+    width: 250,
+    height: 250,
+    marginLeft: -50,
+  },
+  timeAnalysisWords: {
+    marginLeft: -40,
   },
   timeAnalysis: {
     fontSize: 25,
@@ -146,23 +172,32 @@ const styles = StyleSheet.create({
     marginRight: 30,
     fontFamily: 'Roboto-Italic',
   },
+
+  // results bubble
   resultButton: {
     backgroundColor: '#6D2C2A',
-    paddingVertical: 20,
+    paddingVertical: 40,
     paddingHorizontal: 50,
-    borderRadius: 6,
+    borderRadius: 15,
     borderColor: '#4F1A15',
     borderWidth: 3,
     marginBottom: 20,
+    marginTop: -50,
   },
   resultButtonText: {
     color: 'white',
     fontSize: 18,
     textAlign: 'center',
     fontFamily: 'Roboto-MediumItalic',
+    lineHeight: 21,
   },
+
+  // next button
   buttonContainer: {
-    marginTop: 15,
+    position: 'absolute',
+    bottom: 100,
+    width: '100%',
+    alignItems: 'center',
   },
   customButton: {
     backgroundColor: '#F5E6E1',
@@ -172,7 +207,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#6D2C2A',
-    fontSize: 18,
+    fontSize: 20,
     textAlign: 'center',
     marginTop: -8,
   }
