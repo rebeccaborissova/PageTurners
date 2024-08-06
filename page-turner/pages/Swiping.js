@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import images from '../constants/images';
@@ -39,33 +39,43 @@ const Swiping = ({navigation, route}) => {
     fetchBooks();
   }, [book_id]);
 
-  const handleSwipeRight = (cardIndex) => {
-    const likedBook = books[cardIndex];
-    setLikedBooks((prevLikedBooks) => [...prevLikedBooks, likedBook]);
-  };
+  const addLikedBook = useCallback((book) => {
+    setLikedBooks((prevLikedBooks) => {
+      // Check if the book is already in the liked books array
+      if (!prevLikedBooks.some(likedBook => likedBook.id === book.id)) {
+        return [...prevLikedBooks, book];
+      }
+      return prevLikedBooks;
+    });
+  }, []);
 
-  const handleSwipedAll = () => {
+  const handleSwipeRight = useCallback((cardIndex) => {
+    const likedBook = books[cardIndex];
+    addLikedBook(likedBook);
+  }, [books, addLikedBook]);
+
+  const handleSwipedAll = useCallback(() => {
     console.log('All cards swiped');
     console.log('Liked Books:', likedBooks);
     navigation.navigate('BookRecSummary', {likedBooks: likedBooks, sortingAlgorithm});
-  };
+  }, [likedBooks, navigation, sortingAlgorithm]);
 
-  const handleDislike = () => {
+  const handleDislike = useCallback(() => {
     console.log("Left swipe.");
     swiperRef.current.swipeLeft();
-  }
+  }, []);
 
-  const handleLike = () => {
+  const handleLike = useCallback(() => {
     const cardIndex = currentIndex;
     handleSwipeRight(cardIndex);
     console.log("Right swipe.");
     swiperRef.current.swipeRight();
-  }
+  }, [currentIndex, handleSwipeRight]);
 
-  const handleViewSaved = () => {
+  const handleViewSaved = useCallback(() => {
     console.log("Viewing saved");
     navigation.navigate('BookRecSummary', {likedBooks: likedBooks, sortingAlgorithm});
-  }
+  }, [likedBooks, navigation, sortingAlgorithm]);
 
   if (loading) {
     return (
@@ -103,7 +113,9 @@ const Swiping = ({navigation, route}) => {
             onSwipedAll={handleSwipedAll}
             cardIndex={0}
             stackSize={3}
-            containerStyle={styles.swiperContainer} 
+            containerStyle={styles.swiperContainer}
+            onSwipedLeft={() => setCurrentIndex(prevIndex => prevIndex + 1)}
+            onSwipedRight={() => setCurrentIndex(prevIndex => prevIndex + 1)}
           />
         ) : (
           <Text>No books available</Text>
@@ -126,7 +138,7 @@ const Swiping = ({navigation, route}) => {
         </TouchableOpacity>
       </View>
 
-    </View> // overall container
+    </View>
   );
 };
 
