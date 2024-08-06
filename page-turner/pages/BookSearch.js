@@ -7,11 +7,15 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 const BookSearch = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { sortingAlgo } = route.params;
+  const { sortingAlgo, fetchingError } = route.params;
   const [bookName, setBookName] = useState('');
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const transYAnim = useRef(new Animated.Value(-70)).current;
+
+  if(fetchingError) {
+    Alert.alert("Could not find recommendations", "There was an issue finding book recommendations for the book you requested. Please try a different book");
+  }
  
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -53,7 +57,6 @@ const BookSearch = () => {
         Alert.alert("Error", "Book not found. Please try again.");
       }
     } catch (error) {
-      console.error('Error searching book:', error);
       Alert.alert("Error finding book", "This book does not exist in our records. Please try again");
     }
   }

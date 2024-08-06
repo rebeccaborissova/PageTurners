@@ -31,7 +31,7 @@ const Swiping = () => {
       messages.forEach((message, index) => {
         setTimeout(() => {
           setLoadingMessages(prev => [...prev, message]);
-        }, index * 9000);
+        }, index * 12000);
       });
 
       try {
@@ -58,9 +58,7 @@ const Swiping = () => {
           radixSort: data.radix_sort_time
         });
       } catch (error) {
-        console.error("Error fetching books:", error);
-        navigation.navigate("BookSearch", { sortingAlgo: sortingAlgo });
-        Alert.alert("Error finding recommendation", "There was an error finding recommendations for this book. Please try another.");
+        navigation.navigate("BookSearch", { sortingAlgo: sortingAlgo, fetchingError: true });
       } finally {
         setTimeout(() => setLoading(false), messages.length * 1000);
       }
