@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginHorizontal: 20,
     marginBottom: 25,
-    fontFamily: 'Roboto-Medium',
+    fontFamily: 'Roboto-Italic',
   },
   buttonContainer: {
     marginTop: 10,
