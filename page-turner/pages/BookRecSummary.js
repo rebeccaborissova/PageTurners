@@ -20,11 +20,12 @@ const BookRecSummary = () => {
   }, [fadeAnim]);
 
   const handleToTimerResults = () => {
-    navigation.navigate('TimerResults', { sortingAlgo });
+    navigation.navigate('TimerResults', { sortingAlgo: sortingAlgo, sortTimes: sortTimes });
   }
 
   const handleReturnToSwiping = () => {
-    navigation.navigate('Swiping', { likedBooks, sortingAlgo });
+    if(canReturn)
+      navigation.navigate('Swiping', { likedBooks: likedBooks, sortingAlgo: sortingAlgo, sortTimes: sortTimes });
   }
 
   const renderBookItem = ({ item }) => (

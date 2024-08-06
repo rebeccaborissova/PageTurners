@@ -43,7 +43,7 @@ const Swiping = () => {
         setBooks(similarBooks);
         setSortTimes({
           timSort: data.tim_sort_time,
-          quickSort: data.quick_sort_time
+          radixSort: data.radix_sort_time
         });
       } catch (error) {
         console.error("Error fetching books:", error);

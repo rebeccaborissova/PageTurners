@@ -39,13 +39,13 @@ const SortingAlgoChoice = ({ navigation }) => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.customButton}
-            onPress={() => sortingChoice('radix')}>
+            onPress={() => sortingChoice('Radix Sort')}>
             <Text style={styles.buttonText}> Radix Sort </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.customButton}
-            onPress={() => sortingChoice('tim')}>
+            onPress={() => sortingChoice('Tim Sort')}>
             <Text style={styles.buttonText}> Tim Sort </Text>
           </TouchableOpacity>
         </View>

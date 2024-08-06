@@ -9,13 +9,13 @@ const TimerResults = ({ navigation }) => {
   const transYAnim = useRef(new Animated.Value(-70)).current;
   const route = useRoute();
 
-  const { sortingAlgo } = route.params;
+  const { sortingAlgo, sortTimes } = route.params;
   console.log("sortingAlgo", sortingAlgo);
 
-  const correctAlgorithm = 'Tim Sort'; // TODO: change placeholder to correct algorithm from CSV file data
+  const correctAlgorithm = sortTimes.timSort < sortTimes.radixSort ? "Tim Sort" : "Radix Sort"; // TODO: change placeholder to correct algorithm from CSV file data
   const userIsCorrect = sortingAlgo === correctAlgorithm;
 
-  // initalzing state of next to be false (next will not appear)
+  // initalizing state of next to be false (next will not appear)
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
@@ -62,8 +62,8 @@ const TimerResults = ({ navigation }) => {
           <Image source={images.clockIcon} style={styles.clockIcon} />
           <View style ={styles.timeAnalysisWords}>
             <Text style={styles.timeAnalysis}>Time Analysis</Text>
-            <Text style={styles.time}>Quick Sort: 0.0000s</Text>
-            <Text style={styles.time}>Tim Sort: 0.0000s</Text>
+            <Text style={styles.time}>Radix Sort: {sortTimes.radixSort.toFixed(5)}s</Text>
+            <Text style={styles.time}>Tim Sort: {sortTimes.timSort.toFixed(5)}s</Text>
           </View>
         </View>
 
