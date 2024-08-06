@@ -1,18 +1,14 @@
-import React, { useState, useEffect, useRef} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Image, Button } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import images from "../constants/images";
 
-const Swiping = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
+const Swiping = ({navigation, route}) => {
   const { book_id } = route.params;
   const { sortingAlgorithm } = route.params;  
 
-  const [books, setBooks ] = useState([]);
-  const [likedBooks, setLikedBooks ] = useState([]);
-  const [loading, setLoading ] = useState(true);
+  const [books, setBooks] = useState([]);
+  const [likedBooks, setLikedBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
   const swiperRef = useRef(null);
 
   useEffect(() => {
@@ -20,7 +16,7 @@ const Swiping = () => {
       setLoading(true);
 
       try {
-        let response = await fetch(`https://actual-terribly-longhorn.ngrok-free.app/similar-books/${book_id}`);
+        let response = await fetch(`https://actual-terribly-longhorn.ngrok-free.app/test`);
         let data = await response.json();
 
         const similarBooks = data.similar_books.map(item => ({
@@ -48,7 +44,16 @@ const Swiping = () => {
 
   const handleSwipedAll = () => {
     console.log('All cards swiped');
-    navigation.navigate('BookRecSummary', { sortingAlgorithm }, { likedBooks: likedBooks.map(book => book.title) });
+    console.log('Liked Books:', likedBooks);
+    navigation.navigate('BookRecSummary', {likedBooks: likedBooks})
+  };
+
+  const handleLikePress = () => {
+    swiperRef.current.swipeRight();
+  };
+
+  const handleDislikePress = () => {
+    swiperRef.current.swipeLeft();
   };
 
   const handleDislike = () => {

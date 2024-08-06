@@ -1,61 +1,150 @@
 // BookRecSummary.js
-import React from 'react'
-import { View, Text, StyleSheet, FlatList, Button } from 'react-native'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import React, { useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Animated } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const BookRecSummary = () => {
-  const route = useRoute()
-  const navigation = useNavigation()
-  // receiving choices of likedBooks from BookSearch and sortingAlgo from SortingAlgoChoice
-  const { likedBooks } = route.params
-  const { sortingAlgorithm } = route.params;  
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { likedBooks } = route.params;
 
-  const handleToTimerResults = () => {
-    navigation.navigate('TimerResults', { sortingAlgorithm });
-  }
+  // Working to establish fade-in transition
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  }, [fadeAnim]);
+
+  const renderBookItem = ({ item }) => (
+    <View style={styles.bookItem}>
+      <Text style={styles.bookTitle}>{item.title}</Text>
+      <Text style={styles.bookAuthor}>Author: {item.author || 'Unknown'}</Text>
+      <Text style={styles.bookSubjects}>Subjects: {item.subjects || 'Not Available'}</Text>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Liked Books</Text>
-      <FlatList
-        data={likedBooks}
-        keyExtractor={(item) => item.title}
-        renderItem={({ item }) => (
-          <View style={styles.bookItem}>
-            <Text style={styles.bookText}>{item.title}</Text>
-          </View>
+      <Animated.View style={[styles.contentContainer, { opacity: fadeAnim }]}>
+        <Text style={styles.title}>Liked Books</Text>
+        {likedBooks.length > 0 ? (
+          <FlatList
+            data={likedBooks}
+            keyExtractor={(item) => item.id}
+            renderItem={renderBookItem}
+            contentContainerStyle={styles.listContainer}
+          />
+        ) : (
+          <Text style={styles.noBooksText}>No books liked yet!</Text>
         )}
-      /> 
-      <View style={styles.buttonContainer}>
-        <Button title="Sorting Algorithm Timer" onPress={handleToTimerResults} />
-      </View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('TimerResults')}
+        >
+          <Text style={styles.buttonText}>Sorting Algorithm Timer</Text>
+        </TouchableOpacity>
+      </Animated.View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#F5E6E1',
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 20,
   },
-  title: {
-    fontSize: 24,
+  contentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  finishedText: {
+    fontSize: 20,
     fontWeight: 'bold',
     marginVertical: 100,
   },
-  bookItem: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+  finishedSubtitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginVertical: -95,
   },
-  bookText: {
+  timerButton: {
+    backgroundColor: '#6D2C2A',
+    paddingVertical: 10,
+    paddingHorizontal: 50,
+    borderRadius: 6,
+    borderColor: '#4F1A15',
+    borderWidth: 3,
+    marginBottom: 450,
+  },
+  sortingAlgoText: {
+    color: 'white',
     fontSize: 18,
+    textAlign: 'center',
+    fontFamily: 'Roboto-Bold',
   },
-  buttonContainer: {
-    marginTop: 200,
+  title: {
+    fontSize: 25,
+    textAlign: 'center',
+    marginBottom: 20,
+    fontFamily: 'Roboto-Medium',
   },
-})
+  bookItem: {
+    width: '100%',
+    padding: 15,
+    marginVertical: 8,
+    borderRadius: 8,
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  bookTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  bookAuthor: {
+    fontSize: 16,
+    color: '#555',
+  },
+  bookSubjects: {
+    fontSize: 14,
+    color: '#777',
+  },
+  noBooksText: {
+    fontSize: 18,
+    color: '#555',
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  button: {
+    backgroundColor: '#6D2C2A',
+    paddingVertical: 10,
+    paddingHorizontal: '23%',
+    borderRadius: 6,
+    borderColor: '#4F1A15',
+    borderWidth: 3,
+    marginTop: 20,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 20,
+    textAlign: 'center',
+    fontFamily: 'Roboto-Black',
+  },
+  listContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
+});
 
-export default BookRecSummary
+export default BookRecSummary;
