@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
+import images from '../constants/images';
 
 const Swiping = ({navigation, route}) => {
   const { book_id } = route.params;
@@ -48,14 +49,6 @@ const Swiping = ({navigation, route}) => {
     navigation.navigate('BookRecSummary', {likedBooks: likedBooks})
   };
 
-  const handleLikePress = () => {
-    swiperRef.current.swipeRight();
-  };
-
-  const handleDislikePress = () => {
-    swiperRef.current.swipeLeft();
-  };
-
   const handleDislike = () => {
     console.log("Left swipe.");
     swiperRef.current.swipeLeft();
@@ -82,19 +75,21 @@ const Swiping = ({navigation, route}) => {
   return (
     <View style={styles.container}>
       
-      {/* adding top bar */}
-      <Image source = {images.logo} style = {styles.logo} />
+      {/* adding top container */}
+      <View style = {styles.topContainer}>
+        <Image source = {images.logo} style = {styles.logo} />
+      </View>
+      
 
-      {/* items within the card */}
-      <View style = {styles.cardContainer}>
+      <View style = {styles.middleContainer}>
+        {/* items within the card */}
         {books.length > 0 ? (
-          // swiper component
           <Swiper
-            cards={books} // books list -> swiper component
+            cards={books} 
             renderCard={(card) => (
               <View style={styles.card}>
                 <Text style={styles.text}>
-                  {card.title}, {card.author}
+                  {card.title}
                 </Text>
                 <Text style={styles.subjects}>{card.subjects}</Text>
               </View>
@@ -102,18 +97,18 @@ const Swiping = ({navigation, route}) => {
             onSwipedRight={handleSwipeRight}
             onSwipedAll={handleSwipedAll}
             cardIndex={0}
-            backgroundColor={'#F5E6E1'}
             stackSize={3}
             containerStyle={styles.swiperContainer} 
           />
         ) : (
           <Text>No books available</Text>
         )}
-      </View>
+      </View> 
+     
       
       {/* love, dislike, view library */}
       <View style = {styles.bottomContainer}>
-        <TouchableOpacity style = {styles.thumbsDownButton} onPress={handleDislike}>
+        <TouchableOpacity style = {styles.x_icon} onPress={handleDislike}>
           <Image source={images.x_icon} style={styles.icons} />
         </TouchableOpacity>
 
@@ -121,95 +116,109 @@ const Swiping = ({navigation, route}) => {
           <Image source={images.bookshelf} style={styles.bookshelf} />
         </TouchableOpacity>
 
-        <TouchableOpacity style = {styles.thumbsUpButton} onPress={handleLike}>
+        <TouchableOpacity style = {styles.heart} onPress={handleLike}>
           <Image source={images.heart} style={styles.icons} />
         </TouchableOpacity>
       </View>
 
-    </View>
+    </View> // overall container
   );
 };
 
 const styles = StyleSheet.create({
+  // overall container
   container: {
     flex: 1,
     backgroundColor: '#F5E6E1',
+    position: 'relative',
+  },
+
+  // top container
+  topContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 10,
-  },
-  swiperContainer: {
-    width: '100%',
-    height: '100%',
+    zIndex: 1,
+    position: 'relative',
+    marginBottom: -20,
   },
   logo: {
-    marginTop: 15,
+    marginTop: 20,
     width: 200,
     height: 175,
     resizeMode: 'contain', 
   },
-  cardContainer: {
+
+  // middle container (card portions)
+  middleContainer: {
+    backgroundColor: 'black',
+    zIndex: 2,
+    position: 'relative',
     flex: 1,
+  },
+  swiperContainer: {
+    flex: 1,
+    backgroundColor: '#F5E6E1',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 10,
-    backgroundColor: '#fff',
+    zIndex: 3,
+    position: 'relative',
   },
   card: {
-    width: 300,
-    height: 400,
+    backgroundColor: 'white',
+    width: '100%',
+    height: 475,
     borderRadius: 10,
-    backgroundColor: '#f8f9fa',
-    padding: 20,
+    padding: 25,
+    marginTop: -30,
     alignItems: 'center', 
     justifyContent: 'center', 
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.3,
     shadowRadius: 5,
-    elevation: 3,
+    elevation: 5,
+    zIndex: 1,
+    position: 'absolute',
   },
   text: {
     fontSize: 22,
     textAlign: 'center',
-    marginBottom: 10,
+    fontFamily: 'Roboto-Bold',
   },
   subjects: {
+    marginTop: 30,
     fontSize: 16,
     textAlign: 'center',
     color: '#888',
+    fontFamily: 'Roboto-Italic',
   },
 
-  // likes, dislikes, library
+
+  // bottom container (likes, dislikes, library)
   bottomContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '80%',
+    height: 60,
+    paddingVertical: 10,
+    marginBottom: 60,
+    bottom: 0, 
+    left: '10%', 
+    zIndex: 4,
     position: 'absolute',
-    bottom: 20,
-  },
-  thumbsDownButton: {
-    borderRadius: 50,
-    padding: 10,
-  },
-  thumbsUpButton: {
-    borderRadius: 50,
-    padding: 10,
   },
   bookshelfButton: {
     borderRadius: 5,
     paddingVertical: 2,
     paddingHorizontal: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   bookshelf: {
-    width: 70,
-    height: 60,
+    width: 80,
+    height: 70,
   },
   icons: {
-    width: 50,
-    height: 50,
+    width: 70,
+    height: 70,
     backgroundColor: 'white',
     borderRadius: 100,
     borderWidth: 2,

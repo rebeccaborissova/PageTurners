@@ -47,12 +47,6 @@ const Home = ({ navigation }) => {
         >
         <Text style={styles.buttonText}>Begin</Text>
       </TouchableOpacity>
-      
-       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.customButton} onPress={handleThankYou}>
-          <Text style={styles.buttonText}>Hi</Text>
-        </TouchableOpacity>
-      </View>
 
       </View>
       <Footer />
