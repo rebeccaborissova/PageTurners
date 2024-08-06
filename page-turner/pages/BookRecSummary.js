@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Animated, Image } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import images from '../constants/images';
-import Footer from '../components/footer';
 
 const BookRecSummary = () => {
   const navigation = useNavigation();
@@ -46,7 +45,9 @@ const BookRecSummary = () => {
         <Text style={styles.sortingAlgoText}>Timer Results</Text>
       </TouchableOpacity>
       <Animated.View style={[styles.contentContainer, { opacity: fadeAnim }]}>
-        <Text style={styles.title}>Liked Books</Text>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Saved Book Recommendations</Text>
+        </View>
         {likedBooks.length > 0 ? (
           <FlatList
             data={likedBooks}
@@ -57,14 +58,15 @@ const BookRecSummary = () => {
         ) : (
           <Text style={styles.noBooksText}>No books liked yet!</Text>
         )}
-        <TouchableOpacity
-          style={styles.returnButton}
-          onPress={handleReturnToSwiping}
-        >
-          <Text style={styles.returnButtonText}>Return to Swiping</Text>
-        </TouchableOpacity>
+        <View style={styles.returnButtonContainer}>
+          <TouchableOpacity
+            style={styles.returnButton}
+            onPress={handleReturnToSwiping}
+          >
+            <Text style={styles.returnButtonText}>Return to Swiping</Text>
+          </TouchableOpacity>
+        </View>
       </Animated.View>
-      <Footer />
     </View>
   );
 };
@@ -80,18 +82,22 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+
   },
   finishedText: {
     fontSize: 20,
+    fontFamily: 'Roboto-Black',
     fontWeight: 'bold',
     textAlign: 'center',
     marginTop: 50,
-    marginBottom: 10,
+  
   },
   subFinishedText: {
     fontSize: 14,
     textAlign: 'center',
-  
+    fontFamily: 'Roboto-LightItalic',
+    marginTop: -5,
+    padding: 15,
   },
   timerButton: {
     backgroundColor: '#6D2C2A',
@@ -101,19 +107,25 @@ const styles = StyleSheet.create({
     borderColor: '#4F1A15',
     borderWidth: 3,
     alignSelf: 'center',
-    marginBottom: 20,
+    marginBottom: 50, // Increased margin to lower the button
   },
   sortingAlgoText: {
     color: 'white',
     fontSize: 18,
     textAlign: 'center',
-    fontFamily: 'Roboto-Bold',
+    fontFamily: 'Roboto-Medium',
+  },
+  titleContainer: {
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: 5, // Adjust the spacing to bring the title closer to the list
   },
   title: {
+    color: '#6D2C2A',
+    fontWeight: 'bold',
     fontSize: 25,
     textAlign: 'center',
-    marginBottom: 20,
-    fontFamily: 'Roboto-Medium',
+    fontFamily: 'Roboto-BlackItalic',
   },
   bookItem: {
     width: '100%',
@@ -152,7 +164,11 @@ const styles = StyleSheet.create({
     color: '#555',
     textAlign: 'center',
     marginTop: 20,
-    
+  },
+  returnButtonContainer: {
+    width: '100%',
+    alignItems: 'center',
+    marginTop: 50, 
   },
   returnButton: {
     backgroundColor: '#6D2C2A',
@@ -161,15 +177,12 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderColor: '#4F1A15',
     borderWidth: 3,
-    alignSelf: 'center',
-    marginTop: 20,
-
   },
   returnButtonText: {
     color: 'white',
     fontSize: 20,
     textAlign: 'center',
-    fontFamily: 'Roboto-Black',
+    fontFamily: 'Roboto-Medium',
   },
   listContainer: {
     flexGrow: 1,
