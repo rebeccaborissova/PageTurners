@@ -12,7 +12,7 @@ const TimerResults = ({ navigation }) => {
   const { sortingAlgo, sortTimes } = route.params;
   console.log("sortingAlgo", sortingAlgo);
 
-  const correctAlgorithm = sortTimes.timSort < sortTimes.radixSort ? "Tim Sort" : "Radix Sort"; // TODO: change placeholder to correct algorithm from CSV file data
+  const correctAlgorithm = sortTimes.timSort < sortTimes.radixSort ? "Tim Sort" : "Radix Sort";
   const userIsCorrect = sortingAlgo === correctAlgorithm;
 
   const [showButton, setShowButton] = useState(false);
@@ -34,7 +34,7 @@ const TimerResults = ({ navigation }) => {
       setShowButton(true);
     }, 5000);
 
-    return() => clearTimeout(timer);
+    return () => clearTimeout(timer);
   }, [fadeAnim, transYAnim]);
 
   const navigateToThankYou = () => {
@@ -42,30 +42,29 @@ const TimerResults = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.selection}>
+    <View style={styles.container}>
       <Image source={images.logo} style={styles.logo} />
 
-      <Animated.View style={[styles.contentContainer,{ opacity: fadeAnim, transform: [{ translateY: transYAnim }] },]}>
-
+      <Animated.View style={[
+        styles.contentContainer,
+        { opacity: fadeAnim, transform: [{ translateY: transYAnim }] }
+      ]}>
         <Text style={styles.title}>Sorting Algorithms</Text>
 
-        {/* User Selected Sort */}
-        <View style = {styles.selectedSortText}>
+        <View style={styles.selectedSortText}>
           <Text style={styles.subTitle}>Selected Sort </Text>
           <Text style={styles.selectedSort}>{sortingAlgo}</Text>
         </View>
         
-        {/* Time Analysis */}
         <View style={styles.timeAnalysisContainer}>
           <Image source={images.clockIcon} style={styles.clockIcon} />
-          <View style ={styles.timeAnalysisWords}>
+          <View style={styles.timeAnalysisWords}>
             <Text style={styles.timeAnalysis}>Time Analysis</Text>
             <Text style={styles.time}>Radix Sort: {sortTimes.radixSort.toFixed(5)}s</Text>
             <Text style={styles.time}>Tim Sort: {sortTimes.timSort.toFixed(5)}s</Text>
           </View>
         </View>
 
-        {/* results bubble */}
         <TouchableOpacity style={styles.resultButton} disabled>
           <Text style={styles.resultButtonText}>
             {userIsCorrect
@@ -73,135 +72,125 @@ const TimerResults = ({ navigation }) => {
               : `Clearly ... ${correctAlgorithm} was the better option.`}
           </Text>
         </TouchableOpacity>
-      </Animated.View>
 
-      {/* next button */}
-      {/* show button needs to be true for the following condition to be met */}
-      {showButton && (
-        <Animated.View style={styles.buttonContainer} >
+        {showButton && (
           <TouchableOpacity style={styles.customButton} onPress={navigateToThankYou}>
             <Text style={styles.buttonText}>Next</Text>
           </TouchableOpacity>
-        </Animated.View>
-      )}
-      
+        )}
+      </Animated.View>
       <Footer />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  selection: {
+  container: {
     flex: 1,
     backgroundColor: '#F5E6E1',
     alignItems: 'center',
-    justifyContent: 'flex-start',
   },
   logo: {
-    marginTop: 20,
-    width: 200,
-    height: 200,
+    marginTop: 10,
+    width: 150,
+    height: 150,
   },
   contentContainer: {
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginBottom: 50,
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
+    width: '100%',
   },
   title: {
     color: '#6D2C2A',
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginTop: -20,
-    marginBottom: 10,
+    marginBottom: 5,
     fontFamily: 'Roboto-BlackItalic',
   },
   subTitle: {
     color: '#000000',
-    fontSize: 25,
-    marginBottom: 5,
+    fontSize: 22,
+    marginBottom: 2,
     fontFamily: 'Roboto-Bold',
   },
   selectedSortText: {
-    marginTop: 15,
-    paddingTop: 15,
-    paddingBottom: 10,
-    paddingHorizontal: 20,
+    marginTop: 10,
+    paddingTop: 10,
+    paddingBottom: 5,
+    paddingHorizontal: 15,
     borderColor: 'black',
     borderTopWidth: 1,
     borderBottomWidth: 1,
     alignItems: 'center',
+    width: '100%',
   },
   selectedSort: {
     color: '#000000',
-    fontSize: 20,
-    fontWeight: 'Roboto-Italic',
-    marginBottom: 10,
+    fontSize: 18,
+    fontFamily: 'Roboto-Italic',
+    marginBottom: 5,
   },
   timeAnalysisContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
-    marginTop: -20,
+    marginBottom: 10,
+    marginTop: 10,
   },
   clockIcon: {
-    width: 250,
-    height: 250,
-    marginLeft: -50,
-  },
-  timeAnalysisWords: {
+    width: 200,
+    height: 200,
     marginLeft: -40,
   },
+  timeAnalysisWords: {
+    marginLeft: -30,
+  },
   timeAnalysis: {
-    fontSize: 25,
+    fontSize: 22,
     color: '#000000',
-    marginBottom: 5,
-    marginLeft: -7,
+    marginBottom: 3,
+    marginLeft: -5,
     fontFamily: 'Roboto-Bold',
   },
   time: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#000000',
-    marginBottom: 5,
-    marginLeft: -5,
-    marginRight: 30,
+    marginBottom: 3,
+    marginLeft: -3,
+    marginRight: 25,
     fontFamily: 'Roboto-Italic',
   },
   resultButton: {
     backgroundColor: '#6D2C2A',
-    paddingVertical: 40,
-    paddingHorizontal: 50,
+    paddingVertical: 30,
+    paddingHorizontal: 40,
     borderRadius: 15,
     borderColor: '#4F1A15',
     borderWidth: 3,
-    marginBottom: 20,
-    marginTop: -50,
+    marginBottom: 15,
+    marginTop: 15,
+    width: '95%',
   },
   resultButtonText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 16,
     textAlign: 'center',
     fontFamily: 'Roboto-MediumItalic',
-    lineHeight: 21,
-  },
-  buttonContainer: {
-    position: 'absolute',
-    bottom: 100,
-    width: '100%',
-    alignItems: 'center',
+    lineHeight: 20,
   },
   customButton: {
     backgroundColor: '#F5E6E1',
-    paddingVertical: 10,
-    paddingHorizontal: 40,
+    paddingVertical: 8,
+    paddingHorizontal: 35,
     borderRadius: 6,
+    marginTop: 10,
   },
   buttonText: {
     color: '#6D2C2A',
-    fontSize: 20,
+    fontSize: 18,
     textAlign: 'center',
-    marginTop: -8,
+    fontFamily: 'Roboto-Bold',
   }
 });
 

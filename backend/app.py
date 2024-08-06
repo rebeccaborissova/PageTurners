@@ -59,7 +59,7 @@ def radix_sort(book_list):
         buckets = [[] for _ in range(RADIX)]
         for book in book_list:
             tmp = int(book.similarity_score * 1e9)
-            bucket_index = (tmp // placement) % RADIX
+            bucket_index = 9 - ((tmp // placement) % RADIX)  # Change here
             buckets[bucket_index].append(book)
 
         a = 0
@@ -72,7 +72,6 @@ def radix_sort(book_list):
         if max_digit < placement:
             max_length = True
 
-    book_list.reverse()
     return book_list
 
 def insertion_sort(books, left_score, right_score):
