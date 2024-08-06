@@ -30,10 +30,6 @@ const Home = ({ navigation }) => {
     navigation.navigate('SortingAlgorithmChoice')
   };
 
-  const handleThankYou = () => {
-    navigation.navigate('ThankYou');
-  };
-
   return (
     <View style={styles.container}>
       <Image source={images.logo} style={styles.logo} />
@@ -47,12 +43,6 @@ const Home = ({ navigation }) => {
         >
         <Text style={styles.buttonText}>Begin</Text>
       </TouchableOpacity>
-      
-       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.customButton} onPress={handleThankYou}>
-          <Text style={styles.buttonText}>Hi</Text>
-        </TouchableOpacity>
-      </View>
 
       </View>
       <Footer />
@@ -78,7 +68,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginHorizontal: 20,
     marginBottom: 25,
-    fontFamily: 'Roboto-Medium',
+    fontFamily: 'Roboto-Italic',
   },
   buttonContainer: {
     marginTop: 10,

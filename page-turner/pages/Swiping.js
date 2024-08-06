@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
+import images from '../constants/images';
 
 const Swiping = ({navigation, route}) => {
   const { book_id } = route.params;
@@ -48,13 +49,19 @@ const Swiping = ({navigation, route}) => {
     navigation.navigate('BookRecSummary', {likedBooks: likedBooks});
   };
 
-  const handleLikePress = () => {
-    swiperRef.current.swipeRight();
-  };
-
-  const handleDislikePress = () => {
+  const handleDislike = () => {
+    console.log("Left swipe.");
     swiperRef.current.swipeLeft();
-  };
+  }
+
+  const handleLike = () => {
+    console.log("Right swipe.");
+    swiperRef.current.swipeRight();
+  }
+
+  const handleViewSaved = () => {
+    console.log("Viewing saved");
+  }
 
   if (loading) {
     return (
@@ -67,103 +74,154 @@ const Swiping = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      {books.length > 0 ? (
-        <Swiper
-          ref={swiperRef}
-          cards={books}
-          renderCard={(card) => (
-            <View style={styles.card}>
-              <Text style={styles.text}>
-                {card.title}, {card.author}
-              </Text>
-              <Text style={styles.subjects}>{card.subjects}</Text>
-            </View>
-          )}
-          onSwipedRight={handleSwipeRight}
-          onSwipedAll={handleSwipedAll}
-          cardIndex={0}
-          backgroundColor={'#f0f1f2'}
-          stackSize={3}
-        />
-      ) : (
-        <Text style={styles.noBooksText}>No books available</Text>
-      )}
-      <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={styles.dislikeButton} onPress={handleDislikePress}>
-          <Text style={styles.buttonText}>{"</3"}</Text>
+      
+      {/* adding top container */}
+      <View style = {styles.topContainer}>
+        <Image source = {images.logo} style = {styles.logo} />
+      </View>
+      
+
+      <View style = {styles.middleContainer}>
+        {/* items within the card */}
+        {books.length > 0 ? (
+          <Swiper
+            cards={books} 
+            renderCard={(card) => (
+              <View style={styles.card}>
+                <Text style={styles.text}>
+                  {card.title}
+                </Text>
+                <Text style={styles.subjects}>{card.subjects}</Text>
+              </View>
+            )}
+            onSwipedRight={handleSwipeRight}
+            onSwipedAll={handleSwipedAll}
+            cardIndex={0}
+            stackSize={3}
+            containerStyle={styles.swiperContainer} 
+          />
+        ) : (
+          <Text>No books available</Text>
+        )}
+      </View> 
+     
+      
+      {/* love, dislike, view library */}
+      <View style = {styles.bottomContainer}>
+        <TouchableOpacity style = {styles.x_icon} onPress={handleDislike}>
+          <Image source={images.x_icon} style={styles.icons} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.likeButton} onPress={handleLikePress}>
-          <Text style={styles.buttonText}>{"<3"}</Text>
+
+        <TouchableOpacity style = {styles.bookshelfButton} onPress={handleViewSaved}>
+          <Image source={images.bookshelf} style={styles.bookshelf} />
+        </TouchableOpacity>
+
+        <TouchableOpacity style = {styles.heart} onPress={handleLike}>
+          <Image source={images.heart} style={styles.icons} />
         </TouchableOpacity>
       </View>
-    </View>
+
+    </View> // overall container
   );
 };
 
 const styles = StyleSheet.create({
+  // overall container
   container: {
     flex: 1,
     backgroundColor: '#F5E6E1',
+    position: 'relative',
+  },
+
+  // top container
+  topContainer: {
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 1,
+    position: 'relative',
+    marginBottom: -20,
+  },
+  logo: {
+    marginTop: 20,
+    width: 200,
+    height: 175,
+    resizeMode: 'contain', 
+  },
+
+  // middle container (card portions)
+  middleContainer: {
+    backgroundColor: 'black',
+    zIndex: 2,
+    position: 'relative',
+    flex: 1,
+  },
+  swiperContainer: {
+    flex: 1,
+    backgroundColor: '#F5E6E1',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 3,
+    position: 'relative',
   },
   card: {
-    flex: 1,
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: '#6D2C2A',
     backgroundColor: 'white',
-    justifyContent: 'center',
-    padding: 20,
+    width: '100%',
+    height: 475,
+    borderRadius: 10,
+    padding: 25,
+    marginTop: -30,
+    alignItems: 'center', 
+    justifyContent: 'center', 
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 5,
+    zIndex: 1,
+    position: 'absolute',
   },
   text: {
     fontSize: 22,
     textAlign: 'center',
-    marginBottom: 10,
-    fontFamily: 'Roboto-Medium',
-    color: '#6D2C2A',
+    fontFamily: 'Roboto-Bold',
   },
   subjects: {
+    marginTop: 30,
     fontSize: 16,
     textAlign: 'center',
     color: '#888',
-    fontFamily: 'Roboto-Regular',
+    fontFamily: 'Roboto-Italic',
   },
-  buttonsContainer: {
+
+
+  // bottom container (likes, dislikes, library)
+  bottomContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '100%',
+    width: '80%',
+    height: 60,
+    paddingVertical: 10,
+    marginBottom: 60,
+    bottom: 0, 
+    left: '10%', 
+    zIndex: 4,
     position: 'absolute',
-    bottom: 20,
+  },
+  bookshelfButton: {
+    borderRadius: 5,
+    paddingVertical: 2,
     paddingHorizontal: 20,
   },
-  dislikeButton: {
-    backgroundColor: '#6D2C2A',
-    borderRadius: 50,
-    padding: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+  bookshelf: {
+    width: 80,
+    height: 70,
   },
-  likeButton: {
-    backgroundColor: '#6D2C2A',
-    borderRadius: 50,
-    padding: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonText: {
-    fontSize: 24,
-    color: 'white',
-    fontFamily: 'Roboto-Black',
-  },
-  noBooksText: {
-    fontSize: 18,
-    color: '#6D2C2A',
-    fontFamily: 'Roboto-Medium',
+  icons: {
+    width: 70,
+    height: 70,
+    backgroundColor: 'white',
+    borderRadius: 100,
+    borderWidth: 2,
   },
   loadingContainer: {
     flex: 1,
