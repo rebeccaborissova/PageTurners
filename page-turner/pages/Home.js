@@ -34,7 +34,7 @@ const Home = ({ navigation }) => {
     <View style={styles.container}>
       <Image source={images.logo} style={styles.logo} />
       <Text style={styles.description}>
-        You're just a swipe away from seeing recommendations based on your favorite book. 
+      Swipe to toss away, tap the heart to love, and unlock new book recommendations!
       </Text>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
