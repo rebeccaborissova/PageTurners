@@ -18,6 +18,7 @@ import { useFonts } from 'expo-font';
 const Stack = createStackNavigator()
 
 const App = () => {
+  // load in fonts for UI
   let [fontsLoaded] = useFonts({
     'Roboto-Black': require('./assets/fonts/Roboto-Black.ttf'), 
     'Roboto-BlackItalic': require('./assets/fonts/Roboto-BlackItalic.ttf'), 
