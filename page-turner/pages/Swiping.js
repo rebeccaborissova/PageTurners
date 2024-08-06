@@ -109,7 +109,6 @@ const Swiping = ({navigation, route}) => {
                 <Text style={styles.subjects}>{card.subjects}</Text>
               </View>
             )}
-            onSwipedRight={handleSwipeRight}
             onSwipedAll={handleSwipedAll}
             cardIndex={0}
             stackSize={3}
@@ -125,10 +124,6 @@ const Swiping = ({navigation, route}) => {
       
       {/* love, dislike, view library */}
       <View style = {styles.bottomContainer}>
-        <TouchableOpacity style = {styles.x_icon} onPress={handleDislike}>
-          <Image source={images.x_icon} style={styles.icons} />
-        </TouchableOpacity>
-
         <TouchableOpacity style = {styles.bookshelfButton} onPress={handleViewSaved}>
           <Image source={images.bookshelf} style={styles.bookshelf} />
         </TouchableOpacity>
