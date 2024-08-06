@@ -9,7 +9,7 @@ import SortingAlgoChoice from './pages/SortingAlgoChoice'
 import BookSearch from './pages/BookSearch'
 import Swiping from './pages/Swiping'
 import BookRecSummary from './pages/BookRecSummary'
-import TimerResults from './pages/timerResults'
+import TimerResults from './pages/TimerResults'
 import ThankYou from './pages/ThankYou'
 
 
