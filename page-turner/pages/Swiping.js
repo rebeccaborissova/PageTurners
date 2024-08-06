@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
-import { useNavigation, useRoute } from '@react-navigation/native';
 
-const Swiping = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
+const Swiping = ({navigation, route}) => {
   const { book_id } = route.params;
 
   const [books, setBooks] = useState([]);
   const [likedBooks, setLikedBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const swiperRef = useRef(null);
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -45,7 +43,16 @@ const Swiping = () => {
 
   const handleSwipedAll = () => {
     console.log('All cards swiped');
-    navigation.navigate('BookRecSummary', { likedBooks: likedBooks.map(book => book.title) });
+    console.log('Liked Books:', likedBooks);
+    navigation.navigate('BookRecSummary', {likedBooks: likedBooks})
+  };
+
+  const handleLikePress = () => {
+    swiperRef.current.swipeRight();
+  };
+
+  const handleDislikePress = () => {
+    swiperRef.current.swipeLeft();
   };
 
   if (loading) {
@@ -61,6 +68,7 @@ const Swiping = () => {
     <View style={styles.container}>
       {books.length > 0 ? (
         <Swiper
+          ref={swiperRef}
           cards={books}
           renderCard={(card) => (
             <View style={styles.card}>
@@ -79,10 +87,10 @@ const Swiping = () => {
       ) : (
         <Text>No books available</Text>
       )}
-      <TouchableOpacity style={styles.dislikeButton} onPress={() => console.log('Swiped Left')}>
+      <TouchableOpacity style={styles.dislikeButton} onPress={handleDislikePress}>
         <Text style={styles.buttonText}>{"</3"}</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.likeButton} onPress={handleSwipeRight}>
+      <TouchableOpacity style={styles.likeButton} onPress={handleLikePress}>
         <Text style={styles.buttonText}>{"<3"}</Text>
       </TouchableOpacity>
     </View>
