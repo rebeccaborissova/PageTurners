@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Animated, Image, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Animated, Image, Alert, ActivityIndicator } from 'react-native';
 import images from '../constants/images'; 
 import Footer from '../components/footer';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -9,6 +9,7 @@ const BookSearch = () => {
   const route = useRoute();
   const { sortingAlgo, fetchingError } = route.params;
   const [bookName, setBookName] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const transYAnim = useRef(new Animated.Value(-70)).current;
@@ -32,6 +33,7 @@ const BookSearch = () => {
   }, [fadeAnim, transYAnim]);
   
   const searchBook = async () => {
+    setIsSearching(true);
     try {
       const response = await fetch("https://actual-terribly-longhorn.ngrok-free.app/get-book-id", {
         method: "POST",
@@ -58,6 +60,8 @@ const BookSearch = () => {
       }
     } catch (error) {
       Alert.alert("Error finding book", "This book does not exist in our records. Please try again");
+    } finally {
+      setIsSearching(false);
     }
   }
   
@@ -66,19 +70,25 @@ const BookSearch = () => {
       <Image source={images.logo} style={styles.logo} />
       <Animated.View style={[styles.contentContainer, { opacity: fadeAnim, transform: [{ translateY: transYAnim }] }]}>
         <Text style={styles.title}>Enter a book title: </Text>
-        <View style =  {styles.searchContainer}>
+        <View style={styles.searchContainer}>
           <TextInput
             style={styles.input}
             placeholder="Search"
             onChangeText={setBookName}
             value={bookName}
           />
-          <TouchableOpacity onPress = {searchBook}>
-            <Image source = {images.searchIcon} style={styles.searchIcon} />
+          <TouchableOpacity onPress={searchBook} disabled={isSearching}>
+            <Image source={images.searchIcon} style={styles.searchIcon} />
           </TouchableOpacity>
         </View>
+        {isSearching && (
+          <View style={styles.searchingContainer}>
+            <ActivityIndicator size="small" color="#6D2C2A" />
+            <Text style={styles.searchingText}>Searching...</Text>
+          </View>
+        )}
       </Animated.View>
-      < Footer />
+      <Footer />
     </View>
   );
 };
@@ -139,6 +149,16 @@ const styles = StyleSheet.create({
     width: 90,
     height: 50,
     marginLeft: -15,
+  },
+  searchingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  searchingText: {
+    marginLeft: 10,
+    fontSize: 16,
+    fontFamily: 'Roboto-Medium',
   },
 });
 

@@ -7,32 +7,37 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 const Swiping = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { bookId, sortingAlgo, shouldFetch } = route.params;
-  console.log(bookId);
+  const { sortingAlgo, bookId, shouldFetch } = route.params;
 
   const [books, setBooks] = useState([]);
   const [likedBooks, setLikedBooks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [loadingMessages, setLoadingMessages] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [sortTimes, setSortTimes] = useState({ timSort: 0, quickSort: 0 });
+  const [sortTimes, setSortTimes] = useState({ timSort: 0, radixSort: 0 });
   const swiperRef = useRef(null);
+
+  const [loadingMessage, setLoadingMessage] = useState("Flipping through pages...");
 
   useEffect(() => {
     const fetchBooks = async () => {
       setLoading(true);
-      setLoadingMessages([]);
+
       const messages = [
         "Flipping through pages...",
         "Analyzing books...",
         "Curating the best reads...",
         "Almost done..."
       ];
-      messages.forEach((message, index) => {
-        setTimeout(() => {
-          setLoadingMessages(prev => [...prev, message]);
-        }, index * 12000);
-      });
+
+      let messageIndex = 0;
+      const messageInterval = setInterval(() => {
+        setLoadingMessage(messages[messageIndex]);
+        if (messages[messageIndex] === "Almost done...") {
+          clearInterval(messageInterval);
+        } else {
+          messageIndex = (messageIndex + 1) % messages.length;
+        }
+      }, 1000);
 
       try {
         const response = await fetch(`https://actual-terribly-longhorn.ngrok-free.app/similar-books/${bookId}`, {
@@ -58,11 +63,13 @@ const Swiping = () => {
           radixSort: data.radix_sort_time
         });
       } catch (error) {
-        navigation.navigate("BookSearch", { sortingAlgo: sortingAlgo, fetchingError: true });
+        console.error("Error fetching books:", error);
       } finally {
-        setTimeout(() => setLoading(false), messages.length * 1000);
+        clearInterval(messageInterval);
+        setLoading(false);
       }
     };
+
     if(shouldFetch) fetchBooks();
   }, [bookId]);
 
@@ -74,6 +81,11 @@ const Swiping = () => {
       return prevLikedBooks;
     });
   }, []);
+
+  const handleSwipeRight = useCallback((cardIndex) => {
+    const likedBook = books[cardIndex];
+    addLikedBook(likedBook);
+  }, [books, addLikedBook]);
 
   const handleSwipedAll = useCallback(() => {
     console.log('All cards swiped');
@@ -88,11 +100,10 @@ const Swiping = () => {
 
   const handleLike = useCallback(() => {
     const cardIndex = currentIndex;
-    const likedBook = books[cardIndex];
-    addLikedBook(likedBook);
-    console.log("Like.");
+    handleSwipeRight(cardIndex);
+    console.log("Right swipe.");
     swiperRef.current.swipeRight();
-  }, [currentIndex]);
+  }, [currentIndex, handleSwipeRight]);
 
   const handleViewSaved = useCallback(() => {
     console.log("Viewing saved");
@@ -103,12 +114,13 @@ const Swiping = () => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#6D2C2A" />
-        <Text style={styles.loadingText}>Please be patient, we are carefully crafting your book recommendations</Text>
-        <View style={styles.loadingMessages}>
-          {loadingMessages.map((message, index) => (
-            <Text key={index} style={styles.loadingMessage}>{message}</Text>
-          ))}
+        <View style={styles.loadingContent}>
+          <Image source={images.logo} style={styles.loadingLogo} />
+          <ActivityIndicator size="large" color="#6D2C2A" style={styles.loadingIndicator} />
+          <View style={styles.loadingTextContainer}>
+            <Text style={styles.loadingTitle}>Crafting Your Perfect Reads</Text>
+            <Text style={styles.loadingText}>{loadingMessage}</Text>
+          </View>
         </View>
       </View>
     );
@@ -128,6 +140,7 @@ const Swiping = () => {
             renderCard={(card) => (
               <View style={styles.card}>
                 <Text style={styles.text}>{card.title}</Text>
+                <Text style={styles.author}>{card.author}</Text>
                 <Text style={styles.subjects}>{card.subjects}</Text>
               </View>
             )}
@@ -136,8 +149,9 @@ const Swiping = () => {
             stackSize={3}
             containerStyle={styles.swiperContainer}
             onSwipedLeft={() => setCurrentIndex(prevIndex => prevIndex + 1)}
-            onSwipedRight={() => {
+            onSwipedRight={(cardIndex) => {
               setCurrentIndex(prevIndex => prevIndex + 1);
+              handleSwipeRight(cardIndex);
             }}
           />
         ) : (
@@ -256,27 +270,44 @@ const styles = StyleSheet.create({
   },
   loadingContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#F5E6E1',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingTop: 60,
+  },
+  loadingContent: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    width: '100%',
+  },
+  loadingLogo: {
+    width: 150,
+    height: 131,
+    resizeMode: 'contain',
+    marginBottom: 30,
+  },
+  loadingTextContainer: {
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginTop: 20
+  },
+  loadingTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#000',
+    textAlign: 'center',
+    marginBottom: 10,
+    fontFamily: 'Roboto-Bold',
+  },
+  loadingIndicator: {
+    marginBottom: 20,
   },
   loadingText: {
-    fontSize: 18,
-    color: '#6D2C2A',
-    fontFamily: 'Roboto-Medium',
-    textAlign: 'center',
-    marginTop: 20,
-    marginBottom: 20,
-    paddingHorizontal: 20,
-  },
-  loadingMessages: {
-    alignItems: 'center',
-  },
-  loadingMessage: {
     fontSize: 16,
-    color: '#6D2C2A',
+    color: '#000',
+    textAlign: 'center',
     fontFamily: 'Roboto-Regular',
-    marginTop: 10,
   },
 });
 

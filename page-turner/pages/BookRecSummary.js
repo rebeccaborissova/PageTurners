@@ -7,6 +7,7 @@ const BookRecSummary = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { likedBooks, sortingAlgo, sortTimes, canReturn } = route.params;
+  console.log(sortTimes)
 
   // Working to establish fade-in transition
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -24,6 +25,7 @@ const BookRecSummary = () => {
   }
 
   const handleReturnToSwiping = () => {
+    console.log(sortTimes)
     if(canReturn)
       navigation.navigate('Swiping', { likedBooks: likedBooks, sortingAlgo: sortingAlgo, sortTimes: sortTimes, shouldFetch: false });
   }
