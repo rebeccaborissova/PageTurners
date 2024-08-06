@@ -182,7 +182,7 @@ def get_similar_books(book_id):
         {
             "book": book.to_dict(),
             "similarity_score": book.similarity_score,
-        } for book in radix_sorted[:5]  # Using Radix Sort result for top 5
+        } for book in radix_sorted[:20]  # Using Radix Sort result for top 5
     ]
 
     end_time = time.time()

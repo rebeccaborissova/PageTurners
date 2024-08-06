@@ -48,7 +48,7 @@ const BookSearch = () => {
       if (data.id) {
         const bookId = data.id;
         console.log('Searching for:', bookId);
-        navigation.navigate('Swiping', { bookId: bookId, sortingAlgo: sortingAlgo });
+        navigation.navigate('Swiping', { bookId: bookId, sortingAlgo: sortingAlgo, shouldFetch: true });
       } else {
         Alert.alert("Error", "Book not found. Please try again.");
       }

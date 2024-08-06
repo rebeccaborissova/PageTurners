@@ -25,7 +25,7 @@ const BookRecSummary = () => {
 
   const handleReturnToSwiping = () => {
     if(canReturn)
-      navigation.navigate('Swiping', { likedBooks: likedBooks, sortingAlgo: sortingAlgo, sortTimes: sortTimes });
+      navigation.navigate('Swiping', { likedBooks: likedBooks, sortingAlgo: sortingAlgo, sortTimes: sortTimes, shouldFetch: false });
   }
 
   const renderBookItem = ({ item }) => (

@@ -7,13 +7,13 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 const Swiping = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { bookId } = route.params;
-  const { sortingAlgo } = route.params;
+  const { bookId, sortingAlgo, shouldFetch } = route.params;
   console.log(bookId);
 
   const [books, setBooks] = useState([]);
   const [likedBooks, setLikedBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMessages, setLoadingMessages] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [sortTimes, setSortTimes] = useState({ timSort: 0, quickSort: 0 });
   const swiperRef = useRef(null);
@@ -21,6 +21,18 @@ const Swiping = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       setLoading(true);
+      setLoadingMessages([]);
+      const messages = [
+        "Flipping through pages...",
+        "Analyzing books...",
+        "Curating the best reads...",
+        "Almost done..."
+      ];
+      messages.forEach((message, index) => {
+        setTimeout(() => {
+          setLoadingMessages(prev => [...prev, message]);
+        }, index * 9000);
+      });
 
       try {
         const response = await fetch(`https://actual-terribly-longhorn.ngrok-free.app/similar-books/${bookId}`, {
@@ -47,12 +59,13 @@ const Swiping = () => {
         });
       } catch (error) {
         console.error("Error fetching books:", error);
+        navigation.navigate("BookSearch", { sortingAlgo: sortingAlgo });
+        Alert.alert("Error finding recommendation", "There was an error finding recommendations for this book. Please try another.");
       } finally {
-        setLoading(false);
+        setTimeout(() => setLoading(false), messages.length * 1000);
       }
     };
-
-    fetchBooks();
+    if(shouldFetch) fetchBooks();
   }, [bookId]);
 
   const addLikedBook = useCallback((book) => {
@@ -63,11 +76,6 @@ const Swiping = () => {
       return prevLikedBooks;
     });
   }, []);
-
-  const handleSwipeRight = useCallback((cardIndex) => {
-    const likedBook = books[cardIndex];
-    addLikedBook(likedBook);
-  }, [books, addLikedBook]);
 
   const handleSwipedAll = useCallback(() => {
     console.log('All cards swiped');
@@ -82,10 +90,11 @@ const Swiping = () => {
 
   const handleLike = useCallback(() => {
     const cardIndex = currentIndex;
-    handleSwipeRight(cardIndex);
-    console.log("Right swipe.");
+    const likedBook = books[cardIndex];
+    addLikedBook(likedBook);
+    console.log("Like.");
     swiperRef.current.swipeRight();
-  }, [currentIndex, handleSwipeRight]);
+  }, [currentIndex]);
 
   const handleViewSaved = useCallback(() => {
     console.log("Viewing saved");
@@ -97,7 +106,12 @@ const Swiping = () => {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#6D2C2A" />
-        <Text style={styles.loadingText}>Loading...</Text>
+        <Text style={styles.loadingText}>Please be patient, we are carefully crafting your book recommendations</Text>
+        <View style={styles.loadingMessages}>
+          {loadingMessages.map((message, index) => (
+            <Text key={index} style={styles.loadingMessage}>{message}</Text>
+          ))}
+        </View>
       </View>
     );
   }
@@ -116,7 +130,6 @@ const Swiping = () => {
             renderCard={(card) => (
               <View style={styles.card}>
                 <Text style={styles.text}>{card.title}</Text>
-                <Text style={styles.author}>{card.author}</Text>
                 <Text style={styles.subjects}>{card.subjects}</Text>
               </View>
             )}
@@ -125,9 +138,8 @@ const Swiping = () => {
             stackSize={3}
             containerStyle={styles.swiperContainer}
             onSwipedLeft={() => setCurrentIndex(prevIndex => prevIndex + 1)}
-            onSwipedRight={(cardIndex) => {
+            onSwipedRight={() => {
               setCurrentIndex(prevIndex => prevIndex + 1);
-              handleSwipeRight(cardIndex);
             }}
           />
         ) : (
@@ -254,6 +266,19 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#6D2C2A',
     fontFamily: 'Roboto-Medium',
+    textAlign: 'center',
+    marginTop: 20,
+    marginBottom: 20,
+    paddingHorizontal: 20,
+  },
+  loadingMessages: {
+    alignItems: 'center',
+  },
+  loadingMessage: {
+    fontSize: 16,
+    color: '#6D2C2A',
+    fontFamily: 'Roboto-Regular',
+    marginTop: 10,
   },
 });
 
