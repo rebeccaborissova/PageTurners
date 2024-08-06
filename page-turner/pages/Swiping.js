@@ -14,7 +14,7 @@ const Swiping = () => {
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [sortTimes, setSortTimes] = useState({ timSort: 0, radixSort: 0 });
-  const [showPopup, setShowPopup] = useState(true);  // New state for popup
+  const [showPopup, setShowPopup] = useState(true);
   const swiperRef = useRef(null);
 
   const [loadingMessage, setLoadingMessage] = useState("Flipping through pages...");
@@ -49,7 +49,6 @@ const Swiping = () => {
         });
         
         let data = await response.json();
-        console.log("Received data:", JSON.stringify(data, null, 2));
 
         const similarBooks = data.similar_books.map(item => ({
           id: item.book.id,
@@ -68,7 +67,7 @@ const Swiping = () => {
       } finally {
         clearInterval(messageInterval);
         setLoading(false);
-        showWelcomePopup();  // Show popup after loading
+        showWelcomePopup();
       }
     };
 
@@ -94,33 +93,18 @@ const Swiping = () => {
     });
   }, []);
 
-  const handleSwipeRight = useCallback((cardIndex) => {
-    const likedBook = books[cardIndex];
-    addLikedBook(likedBook);
-  }, [books, addLikedBook]);
-
   const handleSwipedAll = useCallback(() => {
-    console.log('All cards swiped');
-    console.log('Liked Books:', likedBooks);
     navigation.navigate('BookRecSummary', { likedBooks: likedBooks, sortingAlgo: sortingAlgo, sortTimes: sortTimes, canReturn: false });
   }, [likedBooks, navigation, sortTimes]);
-
-  const handleDislike = useCallback(() => {
-    console.log("Left swipe.");
-    swiperRef.current.swipeLeft();
-  }, []);
 
   const handleLike = useCallback(() => {
     const cardIndex = currentIndex;
     const likedBook = books[cardIndex];
     addLikedBook(likedBook);
-    console.log("Right swipe.");
     swiperRef.current.swipeRight();
-  }, [currentIndex, handleSwipeRight]);
+  }, [currentIndex]);
 
   const handleViewSaved = useCallback(() => {
-    console.log("Viewing saved");
-    console.log("likedBooks", likedBooks);
     navigation.navigate('BookRecSummary', { likedBooks: likedBooks, sortingAlgo: sortingAlgo, sortTimes: sortTimes, canReturn: true });
   }, [likedBooks, navigation, sortTimes]);
 
@@ -140,7 +124,7 @@ const Swiping = () => {
   }
 
   if (!loading && showPopup) {
-    return null;  // Return null while waiting for the user to dismiss the popup
+    return null;
   }
 
   return (
@@ -165,7 +149,7 @@ const Swiping = () => {
             stackSize={3}
             containerStyle={styles.swiperContainer}
             onSwipedLeft={() => setCurrentIndex(prevIndex => prevIndex + 1)}
-            onSwipedRight={(cardIndex) => {
+            onSwipedRight={() => {
               setCurrentIndex(prevIndex => prevIndex + 1);
             }}
           />

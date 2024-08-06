@@ -7,9 +7,7 @@ const BookRecSummary = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { likedBooks, sortingAlgo, sortTimes, canReturn } = route.params;
-  console.log(sortTimes)
 
-  // Working to establish fade-in transition
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -25,7 +23,6 @@ const BookRecSummary = () => {
   }
 
   const handleReturnToSwiping = () => {
-    console.log(sortTimes)
     if(canReturn)
       navigation.navigate('Swiping', { likedBooks: likedBooks, sortingAlgo: sortingAlgo, sortTimes: sortTimes, shouldFetch: false });
   }
@@ -108,7 +105,7 @@ const styles = StyleSheet.create({
     borderColor: '#4F1A15',
     borderWidth: 3,
     alignSelf: 'center',
-    marginBottom: 50, // Increased margin to lower the button
+    marginBottom: 50,
   },
   sortingAlgoText: {
     color: 'white',
@@ -119,7 +116,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     width: '100%',
     alignItems: 'center',
-    marginBottom: 5, // Adjust the spacing to bring the title closer to the list
+    marginBottom: 5,
   },
   title: {
     color: '#6D2C2A',
@@ -139,7 +136,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 2,
-    position: 'relative', // Ensure relative positioning for absolute children
+    position: 'relative',
   },
   heartImage: {
     position: 'absolute',

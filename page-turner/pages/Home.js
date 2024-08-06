@@ -1,31 +1,9 @@
-// Home.js
 import React from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity, Button } from 'react-native';
 import images from '../constants/images';
 import Footer from '../components/footer';
 
-const Home = ({ navigation }) => {
-
-  const makeCall = async () => {
-    /*const response2 = await fetch("https://actual-terribly-longhorn.ngrok-free.app/similar-books/OL1000307W", {
-      method: "GET"
-    });
-    const text2 = await response2.text();
-    console.log(text2);*/
-
-    const response3 = await fetch("https://actual-terribly-longhorn.ngrok-free.app/get-book-id", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        title: "Book of realityy",
-      })
-    });
-    const text3 = await response3.text();
-    console.log(text3);
-  }
-  
+const Home = ({ navigation }) => { 
   const handleBegin = () => {
     navigation.navigate('SortingAlgorithmChoice')
   };
@@ -34,16 +12,12 @@ const Home = ({ navigation }) => {
     <View style={styles.container}>
       <Image source={images.logo} style={styles.logo} />
       <Text style={styles.description}>
-      Swipe to toss away, tap the heart to love, and unlock new book recommendations!
+        Swipe to toss away, tap the heart to love, and unlock new book recommendations!
       </Text>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-        style={styles.customButton}
-        onPress={handleBegin}
-        >
-        <Text style={styles.buttonText}>Begin</Text>
-      </TouchableOpacity>
-
+        <TouchableOpacity style={styles.customButton} onPress={handleBegin}>
+          <Text style={styles.buttonText}>Begin</Text>
+        </TouchableOpacity>
       </View>
       <Footer />
     </View>

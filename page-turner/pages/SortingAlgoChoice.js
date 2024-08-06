@@ -1,23 +1,21 @@
-// SortingAlgoChoice.js
 import React, { useRef, useEffect, useState} from 'react';
 import { View, Text, StyleSheet, Button, Image, TouchableOpacity, Animated } from 'react-native';
 import images from '../constants/images';
 import Footer from '../components/footer';
 
 const SortingAlgoChoice = ({ navigation }) => {
-  // working to est. fade-down transition
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const transYAnim = useRef(new Animated.Value(-70)).current;
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
-      toValue: 1, // making button appear
+      toValue: 1,
       duration: 1000,
-      useNativeDriver: true, // improve performance
+      useNativeDriver: true,
     }).start();
 
     Animated.timing(transYAnim, {
-      toValue: 0, // moving from position -50 to 0
+      toValue: 0,
       duration: 1000,
       useNativeDriver: true,
     }).start();
@@ -31,7 +29,6 @@ const SortingAlgoChoice = ({ navigation }) => {
     <View style={styles.selection}>
       <Image source = {images.logo} style={styles.logo} />
 
-      {/* animated view = special View screen w/ animations; style takes in array of styles */}
       <Animated.View style={[styles.contentContainer, { opacity: fadeAnim, transform: [{ translateY: transYAnim }] }]}>
         <Text style={styles.title}>
           First, select your sorting algorithm:
@@ -50,6 +47,7 @@ const SortingAlgoChoice = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </Animated.View>
+      
       <Footer />
   </View>
   )

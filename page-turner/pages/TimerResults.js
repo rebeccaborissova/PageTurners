@@ -15,7 +15,6 @@ const TimerResults = ({ navigation }) => {
   const correctAlgorithm = sortTimes.timSort < sortTimes.radixSort ? "Tim Sort" : "Radix Sort"; // TODO: change placeholder to correct algorithm from CSV file data
   const userIsCorrect = sortingAlgo === correctAlgorithm;
 
-  // initalizing state of next to be false (next will not appear)
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
@@ -31,7 +30,6 @@ const TimerResults = ({ navigation }) => {
       useNativeDriver: true,
     }).start();
 
-    // after 5 seconds, showButton set to true
     const timer = setTimeout(() => {
       setShowButton(true);
     }, 5000);
@@ -141,8 +139,6 @@ const styles = StyleSheet.create({
     fontWeight: 'Roboto-Italic',
     marginBottom: 10,
   },
-
-  // time analysis
   timeAnalysisContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -172,8 +168,6 @@ const styles = StyleSheet.create({
     marginRight: 30,
     fontFamily: 'Roboto-Italic',
   },
-
-  // results bubble
   resultButton: {
     backgroundColor: '#6D2C2A',
     paddingVertical: 40,
@@ -191,8 +185,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-MediumItalic',
     lineHeight: 21,
   },
-
-  // next button
   buttonContainer: {
     position: 'absolute',
     bottom: 100,
