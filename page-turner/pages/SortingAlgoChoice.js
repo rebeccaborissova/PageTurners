@@ -34,7 +34,7 @@ const SortingAlgoChoice = ({ navigation }) => {
       {/* animated view = special View screen w/ animations; style takes in array of styles */}
       <Animated.View style={[styles.contentContainer, { opacity: fadeAnim, transform: [{ translateY: transYAnim }] }]}>
         <Text style={styles.title}>
-          First, select your sorting algorithm:
+          First, predict which sorting algorthim will run faster to load your recommendations:
         </Text>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
