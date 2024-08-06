@@ -45,7 +45,7 @@ const Swiping = ({navigation, route}) => {
   const handleSwipedAll = () => {
     console.log('All cards swiped');
     console.log('Liked Books:', likedBooks);
-    navigation.navigate('BookRecSummary', {likedBooks: likedBooks})
+    navigation.navigate('BookRecSummary', {likedBooks: likedBooks});
   };
 
   const handleLikePress = () => {
@@ -56,25 +56,11 @@ const Swiping = ({navigation, route}) => {
     swiperRef.current.swipeLeft();
   };
 
-  const handleDislike = () => {
-    console.log("Left swipe.");
-    swiperRef.current.swipeLeft();
-  }
-
-  const handleLike = () => {
-    console.log("Right swipe.");
-    swiperRef.current.swipeRight();
-  }
-
-  const handleViewSaved = () => {
-    console.log("Viewing saved");
-  }
-
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="brown" />
-        <Text>Loading...</Text>
+        <ActivityIndicator size="large" color="#6D2C2A" />
+        <Text style={styles.loadingText}>Loading...</Text>
       </View>
     );
   }
@@ -100,14 +86,16 @@ const Swiping = ({navigation, route}) => {
           stackSize={3}
         />
       ) : (
-        <Text>No books available</Text>
+        <Text style={styles.noBooksText}>No books available</Text>
       )}
-      <TouchableOpacity style={styles.dislikeButton} onPress={handleDislikePress}>
-        <Text style={styles.buttonText}>{"</3"}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.likeButton} onPress={handleLikePress}>
-        <Text style={styles.buttonText}>{"<3"}</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity style={styles.dislikeButton} onPress={handleDislikePress}>
+          <Text style={styles.buttonText}>{"</3"}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.likeButton} onPress={handleLikePress}>
+          <Text style={styles.buttonText}>{"<3"}</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -117,80 +105,76 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5E6E1',
     alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
-  logo: {
-    marginTop: 15,
-    width: 200,
-    height: 175,
-    resizeMode: 'contain', 
-  },
-  cardContainer: {
-    flex: 1,
-    width: '85%',
-    backgroundColor: 'white',
-    marginBottom: 100,
-    borderRadius: 20,
-    borderColor: 'black',
     justifyContent: 'center',
-    alignItems: 'center',
   },
   card: {
     flex: 1,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: 'white',
-    justifyContent: 'center',
+    borderColor: '#6D2C2A',
     backgroundColor: 'white',
+    justifyContent: 'center',
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
   },
   text: {
     fontSize: 22,
     textAlign: 'center',
     marginBottom: 10,
+    fontFamily: 'Roboto-Medium',
+    color: '#6D2C2A',
   },
   subjects: {
     fontSize: 16,
     textAlign: 'center',
     color: '#888',
+    fontFamily: 'Roboto-Regular',
   },
-  bottomContainer: {
+  buttonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '80%',
+    width: '100%',
     position: 'absolute',
     bottom: 20,
-  },
-  thumbsDownButton: {
-    borderRadius: 50,
-    padding: 10,
-  },
-  thumbsUpButton: {
-    borderRadius: 50,
-    padding: 10,
-  },
-  bookshelfButton: {
-    borderRadius: 5,
-    paddingVertical: 2,
     paddingHorizontal: 20,
-    justifyContent: 'center',
+  },
+  dislikeButton: {
+    backgroundColor: '#6D2C2A',
+    borderRadius: 50,
+    padding: 10,
     alignItems: 'center',
+    justifyContent: 'center',
   },
-  bookshelf: {
-    width: 70,
-    height: 60,
+  likeButton: {
+    backgroundColor: '#6D2C2A',
+    borderRadius: 50,
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  icons: {
-    width: 50,
-    height: 50,
-    backgroundColor: 'white',
-    borderRadius: 100,
-    borderWidth: 2,
+  buttonText: {
+    fontSize: 24,
+    color: 'white',
+    fontFamily: 'Roboto-Black',
+  },
+  noBooksText: {
+    fontSize: 18,
+    color: '#6D2C2A',
+    fontFamily: 'Roboto-Medium',
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#F5E6E1',
+  },
+  loadingText: {
+    fontSize: 18,
+    color: '#6D2C2A',
+    fontFamily: 'Roboto-Medium',
   },
 });
 

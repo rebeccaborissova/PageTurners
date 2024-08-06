@@ -2,32 +2,31 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Animated, Image } from 'react-native';
 import images from '../constants/images'; 
 import Footer from '../components/footer';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-const BookSearch = ({ route, navigation }) => {
+const BookSearch = () => {
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { sortingAlgorithm } = route.params;
   const [bookName, setBookName] = useState('');
 
-  // const BookSearch = ({ route, navigation }) => {
-  const { sortingAlgorithm } = route.params;  // recieving choice of sorting algo
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const transYAnim = useRef(new Animated.Value(-70)).current;
+ 
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
 
-   // working to est. fade-down transition
-   const fadeAnim = useRef(new Animated.Value(0)).current;
-   const transYAnim = useRef(new Animated.Value(-70)).current;
- 
-   useEffect(() => {
-     Animated.timing(fadeAnim, {
-       toValue: 1, // making button appear
-       duration: 1000,
-       useNativeDriver: true, // improve performance
-     }).start();
- 
-     Animated.timing(transYAnim, {
-       toValue: 0, // moving from position -50 to 0
-       duration: 1000,
-       useNativeDriver: true,
-     }).start();
-   }, [fadeAnim, transYAnim]);
+    Animated.timing(transYAnim, {
+      toValue: 0,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  }, [fadeAnim, transYAnim]);
   
-
   const searchBook = async () => {
     const response = await fetch("https://actual-terribly-longhorn.ngrok-free.app/get-book-id", {
       method: "POST",
@@ -51,7 +50,7 @@ const BookSearch = ({ route, navigation }) => {
         <View style =  {styles.searchContainer}>
           <TextInput
             style={styles.input}
-            placeholder="Type here..."
+            placeholder="Search"
             onChangeText={setBookName}
             value={bookName}
           />
