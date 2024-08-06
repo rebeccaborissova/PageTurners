@@ -46,7 +46,7 @@ const Swiping = ({navigation, route}) => {
   const handleSwipedAll = () => {
     console.log('All cards swiped');
     console.log('Liked Books:', likedBooks);
-    navigation.navigate('BookRecSummary', {likedBooks: likedBooks});
+    navigation.navigate('BookRecSummary', {likedBooks: likedBooks, sortingAlgorithm});
   };
 
   const handleDislike = () => {
@@ -61,6 +61,7 @@ const Swiping = ({navigation, route}) => {
 
   const handleViewSaved = () => {
     console.log("Viewing saved");
+    navigation.navigate('BookRecSummary', {likedBooks: likedBooks, sortingAlgorithm});
   }
 
   if (loading) {

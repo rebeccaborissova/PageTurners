@@ -30,10 +30,6 @@ const Home = ({ navigation }) => {
     navigation.navigate('SortingAlgorithmChoice')
   };
 
-  const handleThankYou = () => {
-    navigation.navigate('ThankYou');
-  };
-
   return (
     <View style={styles.container}>
       <Image source={images.logo} style={styles.logo} />
