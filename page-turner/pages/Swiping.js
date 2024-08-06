@@ -49,6 +49,7 @@ const Swiping = () => {
         });
         
         let data = await response.json();
+        console.log("Received data:", JSON.stringify(data, null, 2));
 
         const similarBooks = data.similar_books.map(item => ({
           id: item.book.id,
@@ -93,7 +94,14 @@ const Swiping = () => {
     });
   }, []);
 
+  const handleSwipeRight = useCallback((cardIndex) => {
+    const likedBook = books[cardIndex];
+    addLikedBook(likedBook);
+  }, [books, addLikedBook]);
+
   const handleSwipedAll = useCallback(() => {
+    console.log('All cards swiped');
+    console.log('Liked Books:', likedBooks);
     navigation.navigate('BookRecSummary', { likedBooks: likedBooks, sortingAlgo: sortingAlgo, sortTimes: sortTimes, canReturn: false });
   }, [likedBooks, navigation, sortTimes]);
 
@@ -101,10 +109,13 @@ const Swiping = () => {
     const cardIndex = currentIndex;
     const likedBook = books[cardIndex];
     addLikedBook(likedBook);
+    console.log("Right swipe.");
     swiperRef.current.swipeRight();
-  }, [currentIndex]);
+  }, [currentIndex, handleSwipeRight]);
 
   const handleViewSaved = useCallback(() => {
+    console.log("Viewing saved");
+    console.log("likedBooks", likedBooks);
     navigation.navigate('BookRecSummary', { likedBooks: likedBooks, sortingAlgo: sortingAlgo, sortTimes: sortTimes, canReturn: true });
   }, [likedBooks, navigation, sortTimes]);
 
@@ -149,7 +160,7 @@ const Swiping = () => {
             stackSize={3}
             containerStyle={styles.swiperContainer}
             onSwipedLeft={() => setCurrentIndex(prevIndex => prevIndex + 1)}
-            onSwipedRight={() => {
+            onSwipedRight={(cardIndex) => {
               setCurrentIndex(prevIndex => prevIndex + 1);
             }}
           />
