@@ -46,7 +46,7 @@ const Swiping = ({navigation, route}) => {
   const handleSwipedAll = () => {
     console.log('All cards swiped');
     console.log('Liked Books:', likedBooks);
-    navigation.navigate('BookRecSummary', {likedBooks: likedBooks})
+    navigation.navigate('BookRecSummary', {likedBooks: likedBooks});
   };
 
   const handleDislike = () => {
@@ -66,8 +66,8 @@ const Swiping = ({navigation, route}) => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="brown" />
-        <Text>Loading...</Text>
+        <ActivityIndicator size="large" color="#6D2C2A" />
+        <Text style={styles.loadingText}>Loading...</Text>
       </View>
     );
   }
@@ -223,13 +223,16 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 2,
   },
-
-  // loading screen style
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#F5E6E1',
+  },
+  loadingText: {
+    fontSize: 18,
+    color: '#6D2C2A',
+    fontFamily: 'Roboto-Medium',
   },
 });
 
