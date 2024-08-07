@@ -3,10 +3,13 @@ import json
 import csv
 import unicodedata
 from langdetect import detect, LangDetectException
+
+#checks that the title contains normal unicode characters
 def is_valid_text(text):
     normalized = unicodedata.normalize('NFKD', text).encode('ASCII', 'ignore').decode()
     return bool(re.match(r'^[A-Za-z0-9\s\-_.,;:!?()\'\"]+$', normalized))
 
+#check that the title and subjects are english
 def is_english(text):
     try:
         return detect(text) == 'en'
@@ -23,14 +26,17 @@ def parse_book_data(data):
             title = book_data.get('title', '')
             subjects = book_data.get('subjects', [])
 
+            #check that title is in english and is valid text
             if not is_valid_text(title) or not is_english(title):
                 continue
 
+            #check that subjects are in english and is valid text
             valid_subjects = [subj for subj in subjects if is_valid_text(subj) and is_english(subj)]
 
             if not valid_subjects:
                 continue
 
+            #gets authors, accounting for multiple authors in the dump
             authors = []
             for author_data in book_data.get('authors', []):
                 if isinstance(author_data, dict):
@@ -38,6 +44,7 @@ def parse_book_data(data):
                     if author_key:
                         authors.append(author_key.split('/')[-1])
 
+            #adds another book to the list
             books.append({
                 'id': id,
                 'title': title,
@@ -59,10 +66,13 @@ def write_to_csv(books, filename):
 
 
 def main():
+    #reads in file
     with open('x00.txt', 'r', encoding='utf-8') as file:
         data = file.read()
 
     parsed_books = parse_book_data(data)
+
+    #writes out file
     write_to_csv(parsed_books, 'books_data.csv')
 
 
