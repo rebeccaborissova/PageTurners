@@ -41,7 +41,7 @@ const Swiping = () => {
       }, 10000);
 
       try {
-        const response = await fetch(`https://actual-terribly-longhorn.ngrok-free.app/similar-books/${bookId}`, {
+        const response = await fetch(`http://127.0.0.1:3001/similar-books/${bookId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

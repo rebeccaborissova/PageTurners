@@ -35,7 +35,7 @@ const BookSearch = () => {
   const searchBook = async () => {
     setIsSearching(true);
     try {
-      const response = await fetch("https://actual-terribly-longhorn.ngrok-free.app/get-book-id", {
+      const response = await fetch("http://127.0.0.1:3001/get-book-id", {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
