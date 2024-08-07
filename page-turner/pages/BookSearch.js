@@ -6,19 +6,25 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { localhost } from '../constants/url';
 
 const BookSearch = () => {
+  // hooks for navigation and route parameters
   const navigation = useNavigation();
   const route = useRoute();
   const { sortingAlgo, fetchingError } = route.params;
+
+  // book title input and search status state hooks
   const [bookName, setBookName] = useState('');
   const [isSearching, setIsSearching] = useState(false);
 
+  // refs for animations
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const transYAnim = useRef(new Animated.Value(-70)).current;
 
+  // display Alert banner for error when book not fetched 
   if(fetchingError) {
     Alert.alert("Could not find recommendations", "There was an issue finding book recommendations for the book you requested. Please try a different book");
   }
  
+  // runs animations: fade-in & slide-up
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
@@ -33,9 +39,11 @@ const BookSearch = () => {
     }).start();
   }, [fadeAnim, transYAnim]);
   
+  // API call for when user inputs a book title
   const searchBook = async () => {
     setIsSearching(true);
     try {
+      // POST request to server
       const response = await fetch(`http://${localhost}:5000/get-book-id`, {
         method: "POST",
         headers: {
@@ -46,12 +54,14 @@ const BookSearch = () => {
         }),
       });
 
+      // error handling for network response
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
 
       const data = await response.json();
       
+      // navigation to swiping screen after book id found w/ API call
       if (data.id) {
         const bookId = data.id;
         navigation.navigate('Swiping', { bookId: bookId, sortingAlgo: sortingAlgo, shouldFetch: true });
@@ -60,6 +70,7 @@ const BookSearch = () => {
       }
       
     } catch (error) {
+      // alert banner showing error for when book is not in dataset
       Alert.alert("Error finding book", "This book does not exist in our records. Please try again");
     } finally {
       setIsSearching(false);
@@ -94,10 +105,11 @@ const BookSearch = () => {
   );
 };
 
+// styling
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5E6E1',
+    backgroundColor: '#F5E6E1',   // cream background color
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
