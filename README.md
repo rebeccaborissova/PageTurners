@@ -1,4 +1,4 @@
-# Page Turner
+# PageTurners
 Final project for COP3530 Data Structures &amp; Algorithms.<br>
 This application provides customized book recommendations for a user based on their input.
 
