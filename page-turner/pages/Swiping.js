@@ -8,22 +8,35 @@ import { localhost } from '../constants/url';
 const Swiping = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { sortingAlgo, bookId, shouldFetch } = route.params;
 
-  const [books, setBooks] = useState([]);
-  const [likedBooks, setLikedBooks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [sortTimes, setSortTimes] = useState({ timSort: 0, radixSort: 0 });
-  const [showPopup, setShowPopup] = useState(true);
+  // passed in sorting algorthim choice from previous screen, the book ID from search screen, as well as information regarding whether information should be retrieved
+  const { sortingAlgo, bookId, shouldFetch } = route.params;
+  
+  // initializing swiperRef (swiper component's) initial value to null; state changes when time to swipe
   const swiperRef = useRef(null);
 
+  // initializing initial top 20 books to be populated list to be empty 
+  // initializing initial saved books state list to be empty
+  const [books, setBooks] = useState([]);
+  const [likedBooks, setLikedBooks] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // initializing sort times to 0.0
+  const [sortTimes, setSortTimes] = useState({ timSort: 0, radixSort: 0 });
+
+  // initializing pop-up state to be true when comes time for component to render
+  // initializing loading state to be true 
+  const [showPopup, setShowPopup] = useState(true);
+  const [loading, setLoading] = useState(true);
+
+  // setting default state of the 'waiting room' seen before card swipping occurs
   const [loadingMessage, setLoadingMessage] = useState("Flipping through pages...");
 
   useEffect(() => {
     const fetchBooks = async () => {
       setLoading(true);
 
+      // before the card screen appears, a few messages will be cycled through as a 'waiting room' period
       const messages = [
         "Flipping through pages...",
         "Analyzing books...",
@@ -31,6 +44,7 @@ const Swiping = () => {
         "Almost done..."
       ];
 
+      // creating the actual cycle-through message effect with the 'waiting room' messages 
       let messageIndex = 0;
       const messageInterval = setInterval(() => {
         setLoadingMessage(messages[messageIndex]);
@@ -41,6 +55,7 @@ const Swiping = () => {
         }
       }, 10000);
 
+      // fetching API to make GET request for similar books based identifier (book id) 
       try {
         const response = await fetch(`http://${localhost}:5000/similar-books/${bookId}`, {
           method: 'GET',
@@ -51,6 +66,7 @@ const Swiping = () => {
         
         let data = await response.json();
 
+        // retrieving information about the books to display on cards including title & the book's subject description
         const similarBooks = data.similar_books.map(item => ({
           id: item.book.id,
           title: item.book.title,
@@ -59,10 +75,12 @@ const Swiping = () => {
         }));
 
         setBooks(similarBooks);
+        // starting the timer for the sorting algorthim
         setSortTimes({
           timSort: data.tim_sort_time,
           radixSort: data.radix_sort_time
         });
+      // accounting for scnearios where fetching a book was unsuccessful
       } catch (error) {
         console.error("Error fetching books:", error);
       } finally {
@@ -75,6 +93,7 @@ const Swiping = () => {
     if(shouldFetch) fetchBooks();
   }, [bookId]);
 
+  // displaying the instructions window before the user begins swiping
   const showWelcomePopup = () => {
     Alert.alert(
       "Welcome!",
@@ -85,6 +104,7 @@ const Swiping = () => {
     );
   };
 
+  // takes a book object and updates its likedBook state; ensures no duplicates present 
   const addLikedBook = useCallback((book) => {
     setLikedBooks((prevLikedBooks) => {
       if (!prevLikedBooks.some(likedBook => likedBook.id === book.id)) {
@@ -94,15 +114,18 @@ const Swiping = () => {
     });
   }, []);
 
+  // handling right swipes; calling addLikedBook function to add to list of liked books 
   const handleSwipeRight = useCallback((cardIndex) => {
     const likedBook = books[cardIndex];
     addLikedBook(likedBook);
   }, [books, addLikedBook]);
 
+  // handling when all the items have been swiped through & navigaets to book recommendation library 
   const handleSwipedAll = useCallback(() => {
     navigation.navigate('BookRecSummary', { likedBooks: likedBooks, sortingAlgo: sortingAlgo, sortTimes: sortTimes, canReturn: false });
   }, [likedBooks, navigation, sortTimes]);
 
+  // updates liked book list; simulates right swipe to next book
   const handleLike = useCallback(() => {
     const cardIndex = currentIndex;
     const likedBook = books[cardIndex];
@@ -110,10 +133,12 @@ const Swiping = () => {
     swiperRef.current.swipeRight();
   }, [currentIndex, handleSwipeRight]);
 
+  // if user wants to view their saved book -> clicking on appropriate icon -> navigating to the library
   const handleViewSaved = useCallback(() => {
     navigation.navigate('BookRecSummary', { likedBooks: likedBooks, sortingAlgo: sortingAlgo, sortTimes: sortTimes, canReturn: true });
   }, [likedBooks, navigation, sortTimes]);
 
+  // if loading is true, meaning the sorting algorthims have not yet determined their top 20 contenders to display to the user
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -129,6 +154,7 @@ const Swiping = () => {
     );
   }
 
+  // if finished loading -> show the instructions popup and eventually navigate to swiping
   if (!loading && showPopup) {
     return null;
   }
@@ -139,10 +165,12 @@ const Swiping = () => {
         <Image source={images.logo} style={styles.logo} />
       </View>
 
+      {/* container holding information about the card */}
       <View style={styles.middleContainer}>
+        {/* checking if there are books in the array -> if so handle the actions of displaying those books */}
         {books.length > 0 ? (
           <Swiper
-            ref={swiperRef}
+            ref={swiperRef} // allowing the user to have swipe actions 
             cards={books} 
             renderCard={(card) => (
               <View style={styles.card}>
@@ -151,15 +179,16 @@ const Swiping = () => {
               </View>
             )}
             onSwipedAll={handleSwipedAll}
-            cardIndex={0}
-            stackSize={3}
-            containerStyle={styles.swiperContainer}
-            onSwipedLeft={() => setCurrentIndex(prevIndex => prevIndex + 1)}
+            cardIndex={0} // initial card to display = index 0
+            stackSize={3} // initial number of cards stacked 
+            containerStyle={styles.swiperContainer} // styling applied to swippig container
+            onSwipedLeft={() => setCurrentIndex(prevIndex => prevIndex + 1)} // incrementing index to show next card when swiped
             onSwipedRight={(cardIndex) => {
               setCurrentIndex(prevIndex => prevIndex + 1);
             }}
           />
         ) : (
+          // else if the books.length = 0, then show that there are no books avaliable
           <Text>No books available</Text>
         )}
       </View>

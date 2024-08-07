@@ -7,8 +7,10 @@ const ThankYou = ({ navigation }) => {
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const transYAnim = useRef(new Animated.Value(-70)).current;
     
+    // using the useState hook to set initial countdown time to 10 seconds
     const [seconds, setSeconds] = useState(10);
     
+    // adding animations including fade-out, y-axis translation
     useEffect(() => {
         Animated.timing(fadeAnim, {
             toValue: 1,
@@ -22,6 +24,7 @@ const ThankYou = ({ navigation }) => {
             useNativeDriver: true,
         }).start();
 
+        // how the countdown feature is implemented; taking the previous state & subtracting 1 every 1 second
         const countdown = setInterval(() => {
             setSeconds((prev) => prev - 1);
         }, 1000);
@@ -29,6 +32,7 @@ const ThankYou = ({ navigation }) => {
         return () => clearInterval(countdown);
     }, [fadeAnim, transYAnim]);
 
+    // determining page behavior to navigate to home page when countdown on page reaches 0 seconds 
     useEffect(() => {
         if (seconds <= 0) {
             navigation.navigate('Home');

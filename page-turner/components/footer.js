@@ -1,6 +1,9 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 
+// creating footer component to add to bottom of some screens 
+// footer component describes the title of the project as well as who completed it
+
 const footer = () => {
   return (
     <View style = {styles.container}>
