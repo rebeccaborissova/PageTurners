@@ -31,6 +31,7 @@ const App = () => {
 
   return (
     <NavigationContainer>
+      {/* creating stack to manage navigation */}
       <Stack.Navigator
         initialRouteName="Home"
         screenOptions={{

@@ -5,6 +5,8 @@ import images from '../constants/images';
 import Footer from '../components/footer';
 
 const TimerResults = ({ navigation }) => {
+
+  // adding animations including fade-out, y-axis translation
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const transYAnim = useRef(new Animated.Value(-70)).current;
   const route = useRoute();
@@ -12,11 +14,14 @@ const TimerResults = ({ navigation }) => {
   const { sortingAlgo, sortTimes } = route.params;
   console.log("sortingAlgo", sortingAlgo);
 
+  // based on the user's selection & how long the sorting algorthims took to conduct, determining which corresponding message to displayin the brown bubble
   const correctAlgorithm = sortTimes.timSort < sortTimes.radixSort ? "Tim Sort" : "Radix Sort";
   const userIsCorrect = sortingAlgo === correctAlgorithm;
 
+  // determining when to show the next button (after 5 seconds); initial state set to false 
   const [showButton, setShowButton] = useState(false);
 
+  // animation effects (fade-down)
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
@@ -30,6 +35,7 @@ const TimerResults = ({ navigation }) => {
       useNativeDriver: true,
     }).start();
 
+    // sets setShowButton to true & thus displays the 'next' button after five seconds 
     const timer = setTimeout(() => {
       setShowButton(true);
     }, 5000);
@@ -37,6 +43,7 @@ const TimerResults = ({ navigation }) => {
     return () => clearTimeout(timer);
   }, [fadeAnim, transYAnim]);
 
+  // creating handle to navigate to Thank You end page 
   const navigateToThankYou = () => {
     navigation.navigate('ThankYou');
   };
@@ -65,6 +72,8 @@ const TimerResults = ({ navigation }) => {
           </View>
         </View>
 
+
+        {/* setting state for which description to show the user based on their selected algorthim choice & the time taken to perform each sort */}
         <TouchableOpacity style={styles.resultButton} disabled>
           <Text style={styles.resultButtonText}>
             {userIsCorrect
@@ -73,6 +82,7 @@ const TimerResults = ({ navigation }) => {
           </Text>
         </TouchableOpacity>
 
+        {/* Next button only appears when showButton's state is true */}
         {showButton && (
           <TouchableOpacity style={styles.customButton} onPress={navigateToThankYou}>
             <Text style={styles.buttonText}>Next</Text>

@@ -10,6 +10,7 @@ import thumbsUp from "../assets/thumbsUp.png";
 import x_icon from "../assets/x_icon.png";
 import bookshelf from "../assets/bookshelf.png";
 
+// constants page to make accessing images easier & centralizing imports 
 export default {
     logo,
     searchIcon,
