@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -7,6 +8,7 @@ import logging
 import time
 
 app = Flask(__name__)
+CORS(app)
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -211,4 +213,4 @@ def test():
     return "Hello World"
 
 if __name__ == '__main__':
-    app.run(debug=True, port=3001)
+    app.run(debug=True, host='0.0.0.0', port=5000)

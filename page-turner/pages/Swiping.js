@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Image, Ale
 import Swiper from 'react-native-deck-swiper';
 import images from '../constants/images';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { localhost } from '../constants/url';
 
 const Swiping = () => {
   const navigation = useNavigation();
@@ -41,7 +42,7 @@ const Swiping = () => {
       }, 10000);
 
       try {
-        const response = await fetch(`http://127.0.0.1:3001/similar-books/${bookId}`, {
+        const response = await fetch(`http://${localhost}:5000/similar-books/${bookId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

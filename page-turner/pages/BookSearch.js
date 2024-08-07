@@ -3,6 +3,7 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, Animated, Image, A
 import images from '../constants/images'; 
 import Footer from '../components/footer';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { localhost } from '../constants/url';
 
 const BookSearch = () => {
   const navigation = useNavigation();
@@ -35,7 +36,7 @@ const BookSearch = () => {
   const searchBook = async () => {
     setIsSearching(true);
     try {
-      const response = await fetch("http://127.0.0.1:3001/get-book-id", {
+      const response = await fetch(`http://${localhost}:5000/get-book-id`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',

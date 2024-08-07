@@ -1,9 +1,6 @@
-// App.js
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
-
 import Home from './pages/Home'
 import SortingAlgoChoice from './pages/SortingAlgoChoice'
 import BookSearch from './pages/BookSearch'
@@ -12,11 +9,9 @@ import BookRecSummary from './pages/BookRecSummary'
 import TimerResults from './pages/TimerResults'
 import ThankYou from './pages/ThankYou'
 
-
 import { useFonts } from 'expo-font';
 
 const Stack = createStackNavigator()
-
 const App = () => {
   // load in fonts for UI
   let [fontsLoaded] = useFonts({
