@@ -4,9 +4,11 @@ import images from '../constants/images';
 import Footer from '../components/footer';
 
 const SortingAlgoChoice = ({ navigation }) => {
+  // hooks for fade-in and swipe-up animations
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const transYAnim = useRef(new Animated.Value(-70)).current;
 
+  // runs animations
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
@@ -21,10 +23,12 @@ const SortingAlgoChoice = ({ navigation }) => {
     }).start();
   }, [fadeAnim, transYAnim]);
 
+  // navigate to page where user inputs book title for search to API call
   const sortingChoice = (sortingAlgo) => {
     navigation.navigate('BookSearch', { sortingAlgo: sortingAlgo});
   };
 
+  // displays a message to user describing to choose a prediction for faster sorting algo
   return (
     <View style={styles.selection}>
       <Image source = {images.logo} style={styles.logo} />
@@ -53,10 +57,11 @@ const SortingAlgoChoice = ({ navigation }) => {
   )
 }
 
+// styling
 const styles = StyleSheet.create({
   selection: {
     flex: 1,
-    backgroundColor: '#F5E6E1',
+    backgroundColor: '#F5E6E1',       // cream color background
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
@@ -79,7 +84,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Medium',
   },
   customButton: {
-    backgroundColor: '#6D2C2A',
+    backgroundColor: '#6D2C2A',        // burgundy button color
     paddingVertical: 10,
     paddingHorizontal: '23%',
     borderRadius: 6,

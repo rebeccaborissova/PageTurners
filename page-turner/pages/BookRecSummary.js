@@ -4,12 +4,15 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import images from '../constants/images';
 
 const BookRecSummary = () => {
+  // hooks for navigation and route parameters
   const navigation = useNavigation();
   const route = useRoute();
   const { likedBooks, sortingAlgo, sortTimes, canReturn } = route.params;
 
+  // fade-in animation Ref
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
+  // run fade-in animation
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
@@ -18,15 +21,18 @@ const BookRecSummary = () => {
     }).start();
   }, [fadeAnim]);
 
+  // navigate to TimerResults screen w/ sorting algorithm chosen and sorting times
   const handleToTimerResults = () => {
     navigation.navigate('TimerResults', { sortingAlgo: sortingAlgo, sortTimes: sortTimes });
   }
 
+  // navigate back to swiping screen, storing likedBooks, sorting algo chosen, and sorting times
   const handleReturnToSwiping = () => {
     if(canReturn)
       navigation.navigate('Swiping', { likedBooks: likedBooks, sortingAlgo: sortingAlgo, sortTimes: sortTimes, shouldFetch: false });
   }
 
+  // render book from list
   const renderBookItem = ({ item }) => (
     <View style={styles.bookItem}>
       <Image source={images.heart} style={styles.heartImage} />
@@ -35,6 +41,7 @@ const BookRecSummary = () => {
     </View>
   );
 
+  // render main layout
   return (
     <View style={styles.outerContainer}>
       <Text style={styles.finishedText}>Finished? </Text>
@@ -71,11 +78,12 @@ const BookRecSummary = () => {
   );
 };
 
+// styling 
 const styles = StyleSheet.create({
   outerContainer: {
     flex: 1,
     justifyContent: 'space-between',
-    backgroundColor: '#F5E6E1',
+    backgroundColor: '#F5E6E1',  // cream color background
     padding: 20,
   },
   contentContainer: {
@@ -98,7 +106,7 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   timerButton: {
-    backgroundColor: '#6D2C2A',
+    backgroundColor: '#6D2C2A',   // burgundy button color
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 6,

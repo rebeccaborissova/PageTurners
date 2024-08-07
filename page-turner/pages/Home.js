@@ -4,10 +4,13 @@ import images from '../constants/images';
 import Footer from '../components/footer';
 
 const Home = ({ navigation }) => { 
+  // navigate to sorting algorithm selection page
   const handleBegin = () => {
     navigation.navigate('SortingAlgorithmChoice')
   };
 
+  // displays home page description & pageturner logo
+  // navigation when user presses begin button
   return (
     <View style={styles.container}>
       <Image source={images.logo} style={styles.logo} />
@@ -24,10 +27,11 @@ const Home = ({ navigation }) => {
   );
 }
 
+// styling
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5E6E1',
+    backgroundColor: '#F5E6E1',     // cream background color
     alignItems: 'center',
     justifyContent: 'center',
     paddingBottom: 50,
@@ -48,11 +52,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   customButton: {
-    backgroundColor: '#6D2C2A', 
+    backgroundColor: '#6D2C2A',     // burgundy button color
     paddingVertical: 5, 
     paddingHorizontal: 40, 
     borderRadius: 6, 
-    borderColor: '#4F1A15',
+    borderColor: '#4F1A15',       // darker burgundy border color
     borderWidth: 3,
   },
   buttonText: {
