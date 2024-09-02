@@ -1,5 +1,4 @@
 # PageTurners
-Final project for COP3530 Data Structures &amp; Algorithms.<br>
 This application provides customized book recommendations for a user based on their input.
 
 Note: While using the application, when prompted to enter a book, please be sure to enter a book that we have in our dataset (books.csv). Otherwise, the application will not provide you with relevant recommendations!
